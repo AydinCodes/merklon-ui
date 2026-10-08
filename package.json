@@ -1,6 +1,6 @@
 {
   "name": "@merklon/ui",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Merklon design system: tokens and React components, plain CSS, no runtime dependencies.",
   "license": "UNLICENSED",
   "type": "module",

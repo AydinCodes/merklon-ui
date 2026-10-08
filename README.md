@@ -67,6 +67,8 @@ handle instead of auto-growing.
 
 ## Changelog
 
+- **0.3.1** — PHILOSOPHY: `ThemeSwitch` is the standard theme control.
+  SETUP: new sites start from merklon-websites-template.
 - **0.3.0** — `ThemeSwitch`: one button for light/dark with a circular reveal,
   the D shortcut, and a fall-back to following the OS. `MerklonFooter`: the
   shared footer (mark home, Contact, socials, theme switch). Optional

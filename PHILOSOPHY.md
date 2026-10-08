@@ -64,6 +64,11 @@ Sources: Rauno Freiberg, *Invisible Details of Interaction Design*; Apple,
   have a label and a tooltip.
 - **Light and dark.** Both are first-class. Check every screen in both before
   shipping.
+- **Theme control is always `ThemeSwitch`.** It's the single sun/moon button
+  that is already in `MerklonFooter`, with the D shortcut and the circular
+  reveal. Never build a different theme control. Use the three-way
+  `ThemeToggle` only on a settings screen that needs an explicit "System"
+  option.
 - **Never:** gradients behind text, glows, floating orbs, glass for its own
   sake, parallax, scroll-jacking, more than one accent colour, or hover
   effects that move layout.

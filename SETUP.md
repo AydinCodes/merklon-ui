@@ -11,95 +11,36 @@ Everything below assumes your projects live side by side:
 
 ## 1. Start a new site
 
+Every site starts from
+[merklon-websites-template](https://github.com/AydinCodes/merklon-websites-template).
+**Clone it; don't download the zip**, so the site can pull later template
+improvements:
+
 ```bash
-bunx create-next-app@latest some-site --ts --app --src-dir --no-tailwind --no-eslint --use-bun
-cd some-site
-bun add github:AydinCodes/merklon-ui @fontsource-variable/inter @fontsource-variable/outfit
+cd ~/Documents/Projects/merklon
+git clone https://github.com/AydinCodes/merklon-websites-template.git my-new-site
+cd my-new-site
+claude        # then: "Set this up as a new site"
 ```
 
-**`next.config.ts`** (copy this whole file; the link detection is explained in
-section 4):
+Claude Code follows the template's `AGENTS.md`: it asks for the name, tagline
+and URL, runs `bun run new-site`, upgrades Next.js and the packages, points git
+at the site's own repo (keeping the template as a second remote), and builds.
 
-```ts
-import fs from "node:fs";
-import path from "node:path";
-import type { NextConfig } from "next";
+**What a site installs.** Nothing beyond the template: `next`, `react`,
+`react-dom`, `@merklon/ui`, `@fontsource-variable/inter` and
+`@fontsource-variable/outfit`, plus TypeScript and the type packages.
 
-const uiIsLinked =
-  fs.lstatSync(path.join(process.cwd(), "node_modules/@merklon/ui"), { throwIfNoEntry: false })?.isSymbolicLink() ?? false;
+**No Tailwind.** Pages are styled with plain CSS files that use the `--mk-*`
+tokens, next to each page. One styling system keeps every site on the design
+system. A second one invites drift, especially when an AI is writing the code.
+The library still supports Tailwind (see the README) if a site ever truly
+needs it.
 
-const nextConfig: NextConfig = {
-  transpilePackages: ["@merklon/ui"],
-  ...(uiIsLinked && { turbopack: { root: path.resolve(process.cwd(), "..") } }),
-};
-
-export default nextConfig;
-```
-
-**`src/app/globals.css`** (replace everything in it):
-
-```css
-@import "@merklon/ui/reset.css";   /* skip this line if the site uses Tailwind */
-@import "@merklon/ui/styles.css";
-```
-
-If the site uses Tailwind v4, use this instead:
-
-```css
-@layer theme, base, mk, components, utilities;
-@import "tailwindcss";
-@import "@merklon/ui/styles.css";
-```
-
-**`src/app/layout.tsx`**:
-
-```tsx
-import "@fontsource-variable/outfit/wght.css";
-import "@fontsource-variable/inter/wght.css";
-import "./globals.css";
-import { ThemeScript, Toaster } from "@merklon/ui";
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en" className="mk-root" data-tone="merklon" suppressHydrationWarning>
-      <head>
-        <ThemeScript />
-      </head>
-      <body>
-        {children}
-        <Toaster />
-      </body>
-    </html>
-  );
-}
-```
-
-**Every page** ends with the shared footer. Leave the props out on other
-sites, and it links to merklon.com and the shared contact page:
-
-```tsx
-import { MerklonFooter } from "@merklon/ui";
-
-<MerklonFooter />
-```
-
-**Add the scripts below to the site's `package.json`** (section 4 explains them):
-
-```json
-"scripts": {
-  "ui:link": "cd ../merklon-ui && bun link && cd - && bun link @merklon/ui",
-  "ui:update": "bun update @merklon/ui"
-}
-```
-
-**Tell AI agents about the philosophy.** Add this line to the site's
-`CLAUDE.md` (or `AGENTS.md`):
-
-```
-@node_modules/@merklon/ui/PHILOSOPHY.md
-```
-
-Then read [PHILOSOPHY.md](./PHILOSOPHY.md) and build the one idea.
+**The notes come with the package.** `PHILOSOPHY.md` and this file ship
+inside `@merklon/ui`, and the template's `CLAUDE.md` loads
+`node_modules/@merklon/ui/PHILOSOPHY.md`. Nothing to copy, and every site gets
+the latest rules with `bun run ui:update`.
 
 ## 2. Deploy
 
