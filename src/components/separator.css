@@ -1,0 +1,16 @@
+@layer mk {
+  .mk-separator {
+    flex-shrink: 0;
+    background: var(--mk-border);
+  }
+
+  .mk-separator[data-orientation="horizontal"] {
+    width: 100%;
+    height: 1px;
+  }
+
+  .mk-separator[data-orientation="vertical"] {
+    align-self: stretch;
+    width: 1px;
+  }
+}

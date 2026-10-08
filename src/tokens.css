@@ -1,0 +1,384 @@
+/* ===========================================================================
+   Merklon UI — design tokens
+
+   Three tiers, and components only ever read the last one:
+
+     1. Primitives   --mk-gray-*, --mk-merklon-*, --mk-red-* …   raw scales
+     2. Semantic     --mk-bg, --mk-fg, --mk-accent, --mk-border …  what a value is for
+     3. Tone         [data-tone="…"] remaps the --mk-accent-* family only
+
+   Every colour is written once with light-dark(), so the theme is decided by
+   `color-scheme` alone: the OS preference by default, or data-theme="light|dark"
+   on <html> (set by ThemeScript), or on any element inside .mk-root to
+   re-theme just that subtree.
+
+   To re-skin another site, override tokens in an unlayered rule after this
+   file. Unlayered CSS always beats @layer mk, so specificity never fights you.
+   =========================================================================== */
+
+@layer mk {
+  /* Theming is opt-in per subtree: put class="mk-root" on <html> to theme a
+     whole site, or on a wrapper to theme one page while older pages stay as
+     they are. data-theme on <html> (set by ThemeScript) or on any element
+     inside .mk-root forces a scheme. */
+  :root:has(.mk-root),
+  .mk-root {
+    color-scheme: light dark;
+  }
+
+  :root[data-theme="light"]:has(.mk-root),
+  [data-theme="light"] .mk-root,
+  .mk-root[data-theme="light"],
+  .mk-root [data-theme="light"] {
+    color-scheme: light;
+  }
+
+  :root[data-theme="dark"]:has(.mk-root),
+  [data-theme="dark"] .mk-root,
+  .mk-root[data-theme="dark"],
+  .mk-root [data-theme="dark"] {
+    color-scheme: dark;
+  }
+
+  /* Colour tokens are declared where the colour scheme is decided, not on
+     :root. light-dark() resolves against the scheme of the element that
+     declares the variable — and the same is true of the Lightning CSS
+     fallback that bundlers emit for older browsers. Declaring on .mk-root and
+     on any [data-theme] inside it is what makes subtree theming work. */
+  :where(:root:has(.mk-root), .mk-root, .mk-root [data-theme]) {
+    /* -----------------------------------------------------------------------
+       1. Primitives — 12-step scales.
+          1–2 app backgrounds · 3–5 component fills · 6–8 borders
+          9–10 solid fills · 11 low-contrast text · 12 high-contrast text
+       ----------------------------------------------------------------------- */
+
+    /* Gray: the zinc the site already uses, re-stepped for both themes. */
+    --mk-gray-1: light-dark(#ffffff, #09090b);
+    --mk-gray-2: light-dark(#fafafa, #111113);
+    --mk-gray-3: light-dark(#f4f4f5, #18181b);
+    --mk-gray-4: light-dark(#ececee, #1f1f23);
+    --mk-gray-5: light-dark(#e4e4e7, #27272a);
+    --mk-gray-6: light-dark(#dcdce0, #2f2f34);
+    --mk-gray-7: light-dark(#d4d4d8, #3f3f46);
+    --mk-gray-8: light-dark(#b8b8bf, #52525b);
+    --mk-gray-9: light-dark(#71717a, #71717a);
+    --mk-gray-10: light-dark(#63636b, #82828b);
+    --mk-gray-11: light-dark(#52525b, #a1a1aa);
+    --mk-gray-12: light-dark(#18181b, #f4f4f5);
+
+    /* Merklon: built from the logo gradient. Step 9 is the logo's #2563eb,
+       step 11 in light is the logo's #1e40af. */
+    --mk-merklon-1: light-dark(#fbfcff, #0a0e1a);
+    --mk-merklon-2: light-dark(#f4f7ff, #0e1424);
+    --mk-merklon-3: light-dark(#eaf0fe, #121c38);
+    --mk-merklon-4: light-dark(#dbe5fe, #15234a);
+    --mk-merklon-5: light-dark(#c9d8fd, #1a2c5b);
+    --mk-merklon-6: light-dark(#b3c7fb, #20366d);
+    --mk-merklon-7: light-dark(#93b0f8, #284386);
+    --mk-merklon-8: light-dark(#6890f2, #3155ad);
+    --mk-merklon-9: light-dark(#2563eb, #2563eb);
+    --mk-merklon-10: light-dark(#1d4ed8, #3b74f5);
+    --mk-merklon-11: light-dark(#1e40af, #8fb1ff);
+    --mk-merklon-12: light-dark(#172554, #dce7ff);
+    /* The original site accent (#007aff), kept as a bright step. */
+    --mk-merklon-bright: light-dark(#007aff, #3395ff);
+
+    /* Status scales — only the steps components actually use. */
+    --mk-red-3: light-dark(#fef2f2, #2a1215);
+    --mk-red-6: light-dark(#fecaca, #5c1d22);
+    --mk-red-9: light-dark(#dc2626, #e5484d);
+    --mk-red-10: light-dark(#c42020, #f2555a);
+    --mk-red-11: light-dark(#b91c1c, #ff9592);
+
+    --mk-green-3: light-dark(#ecfdf3, #0f2418);
+    --mk-green-6: light-dark(#bbf0cf, #1d4a2f);
+    --mk-green-9: light-dark(#16a34a, #2fa35a);
+    --mk-green-10: light-dark(#15913f, #38b366);
+    --mk-green-11: light-dark(#15803d, #6fe0a0);
+
+    --mk-amber-3: light-dark(#fffbeb, #2a1f0a);
+    --mk-amber-6: light-dark(#fde68a, #5a4210);
+    --mk-amber-9: light-dark(#f59e0b, #f5a524);
+    --mk-amber-10: light-dark(#e08e00, #ffb73d);
+    --mk-amber-11: light-dark(#a16207, #ffca5c);
+
+    /* -----------------------------------------------------------------------
+       2. Semantic tokens — the only colours components read.
+       ----------------------------------------------------------------------- */
+    --mk-bg: var(--mk-gray-1);
+    --mk-bg-subtle: var(--mk-gray-2);
+    --mk-surface: light-dark(#ffffff, #111113);
+    --mk-surface-raised: light-dark(#ffffff, #18181b);
+    --mk-overlay: light-dark(#ffffff, #1c1c1f);
+    --mk-backdrop: light-dark(rgb(9 9 11 / 0.32), rgb(0 0 0 / 0.6));
+
+    --mk-fill: var(--mk-gray-3);
+    --mk-fill-hover: var(--mk-gray-4);
+    --mk-fill-active: var(--mk-gray-5);
+
+    --mk-border: light-dark(rgb(9 9 11 / 0.09), rgb(255 255 255 / 0.08));
+    --mk-border-strong: light-dark(rgb(9 9 11 / 0.16), rgb(255 255 255 / 0.15));
+    --mk-border-stronger: light-dark(rgb(9 9 11 / 0.26), rgb(255 255 255 / 0.24));
+
+    --mk-fg: var(--mk-gray-12);
+    --mk-fg-muted: var(--mk-gray-11);
+    --mk-fg-subtle: var(--mk-gray-9);
+    --mk-selection: light-dark(rgb(37 99 235 / 0.18), rgb(59 116 245 / 0.35));
+
+    /* Accent — neutral ink by default, so components suit any site. */
+    --mk-accent: var(--mk-gray-12);
+    --mk-accent-hover: light-dark(#2e2e33, #dcdce0);
+    --mk-accent-active: light-dark(#3f3f46, #c8c8ce);
+    --mk-accent-fg: var(--mk-gray-1);
+    --mk-accent-subtle: var(--mk-gray-3);
+    --mk-accent-text: var(--mk-gray-12);
+    --mk-focus-ring: light-dark(#18181b, #f4f4f5);
+
+    --mk-danger: var(--mk-red-9);
+    --mk-danger-hover: var(--mk-red-10);
+    --mk-danger-fg: #ffffff;
+    --mk-danger-subtle: var(--mk-red-3);
+    --mk-danger-border: var(--mk-red-6);
+    --mk-danger-text: var(--mk-red-11);
+
+    --mk-success: var(--mk-green-9);
+    --mk-success-hover: var(--mk-green-10);
+    --mk-success-fg: #ffffff;
+    --mk-success-subtle: var(--mk-green-3);
+    --mk-success-border: var(--mk-green-6);
+    --mk-success-text: var(--mk-green-11);
+
+    --mk-warning: var(--mk-amber-9);
+    --mk-warning-hover: var(--mk-amber-10);
+    --mk-warning-fg: #1c1400;
+    --mk-warning-subtle: var(--mk-amber-3);
+    --mk-warning-border: var(--mk-amber-6);
+    --mk-warning-text: var(--mk-amber-11);
+
+    /* -----------------------------------------------------------------------
+       Elevation. Light mode leans on soft shadow; dark mode, where shadows
+       vanish against black, leans on a 1px top highlight instead.
+       ----------------------------------------------------------------------- */
+    --mk-highlight: inset 0 1px 0 light-dark(rgb(255 255 255 / 0), rgb(255 255 255 / 0.05));
+    --mk-shadow-xs: 0 1px 1px light-dark(rgb(9 9 11 / 0.04), rgb(0 0 0 / 0.3));
+    --mk-shadow-sm:
+      0 1px 2px light-dark(rgb(9 9 11 / 0.05), rgb(0 0 0 / 0.4)),
+      0 1px 1px light-dark(rgb(9 9 11 / 0.03), rgb(0 0 0 / 0.2));
+    --mk-shadow-md:
+      0 1px 2px light-dark(rgb(9 9 11 / 0.05), rgb(0 0 0 / 0.4)),
+      0 6px 16px -4px light-dark(rgb(9 9 11 / 0.08), rgb(0 0 0 / 0.5));
+    --mk-shadow-lg:
+      0 2px 4px light-dark(rgb(9 9 11 / 0.04), rgb(0 0 0 / 0.4)),
+      0 16px 40px -12px light-dark(rgb(9 9 11 / 0.16), rgb(0 0 0 / 0.7));
+    --mk-shadow-overlay:
+      0 0 0 1px var(--mk-border),
+      0 4px 8px -2px light-dark(rgb(9 9 11 / 0.06), rgb(0 0 0 / 0.5)),
+      0 20px 48px -12px light-dark(rgb(9 9 11 / 0.2), rgb(0 0 0 / 0.75)),
+      var(--mk-highlight);
+  }
+
+  :root {
+    /* -----------------------------------------------------------------------
+       Typography
+       ----------------------------------------------------------------------- */
+    --mk-font-sans: "Inter Variable", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mk-font-display: "Outfit Variable", "Outfit", var(--mk-font-sans);
+    --mk-font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+    --mk-font-features: "ss01" 1, "ss02" 1, "cv01" 1, "cv03" 1;
+
+    --mk-text-xs: 0.75rem;     /* 12 — captions, kbd, badges */
+    --mk-text-sm: 0.8125rem;   /* 13 — controls, dense UI */
+    --mk-text-base: 0.875rem;  /* 14 — body in UI */
+    --mk-text-md: 1rem;        /* 16 — reading text */
+    --mk-text-lg: 1.25rem;     /* 20 — card titles */
+    --mk-text-xl: 1.75rem;     /* 28 — section headings */
+    --mk-text-2xl: 2.5rem;     /* 40 — page headings */
+    --mk-text-display: clamp(2.75rem, 1.6rem + 4.5vw, 5.5rem);
+
+    --mk-leading-tight: 1.15;
+    --mk-leading-snug: 1.35;
+    --mk-leading-normal: 1.55;
+
+    --mk-tracking-tight: -0.03em;
+    --mk-tracking-snug: -0.015em;
+    --mk-tracking-normal: -0.006em;
+
+    --mk-weight-regular: 400;
+    --mk-weight-medium: 500;
+    --mk-weight-semibold: 600;
+
+    /* -----------------------------------------------------------------------
+       Space — 4px base, same steps the site already used.
+       ----------------------------------------------------------------------- */
+    --mk-space-1: 0.25rem;
+    --mk-space-2: 0.5rem;
+    --mk-space-3: 0.75rem;
+    --mk-space-4: 1rem;
+    --mk-space-5: 1.25rem;
+    --mk-space-6: 1.5rem;
+    --mk-space-8: 2rem;
+    --mk-space-10: 2.5rem;
+    --mk-space-12: 3rem;
+    --mk-space-16: 4rem;
+    --mk-space-20: 5rem;
+    --mk-space-24: 6rem;
+
+    /* Minimum hit target. Visible controls may be smaller; their hit area is not. */
+    --mk-hit: 40px;
+    --mk-control-sm: 32px;
+    --mk-control-md: 40px;
+    --mk-control-lg: 48px;
+
+    /* -----------------------------------------------------------------------
+       Radius
+       ----------------------------------------------------------------------- */
+    --mk-radius-xs: 4px;
+    --mk-radius-sm: 6px;
+    --mk-radius-md: 8px;
+    --mk-radius-lg: 12px;
+    --mk-radius-xl: 16px;
+    --mk-radius-2xl: 24px;
+    --mk-radius-full: 9999px;
+    --mk-radius-button: var(--mk-radius-full); /* the Merklon pill */
+    --mk-radius-control: 10px;
+    --mk-radius-card: var(--mk-radius-xl);
+
+    /* -----------------------------------------------------------------------
+       Motion — defined once, reused everywhere.
+
+       --mk-slowmo   dev control: 1 normal, 4 / 10 to inspect motion
+       --mk-motion   1 normally, 0 under reduced motion (movement only)
+
+       Movement durations scale by both. --mk-dur-fade does not collapse
+       under reduced motion: a short cross-fade is still welcome there.
+       ----------------------------------------------------------------------- */
+    --mk-slowmo: 1;
+    --mk-motion: 1;
+
+    /* Durations live in their own rule below, so they re-resolve wherever
+       data-motion or --mk-slowmo is overridden. */
+
+    /* The house curve, unchanged from globals.css and lib/gsap.ts. */
+    --mk-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --mk-ease-out-soft: cubic-bezier(0.33, 1, 0.68, 1);
+    --mk-ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+    --mk-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+    /* Springs sampled from a damped oscillator. Pair with --mk-dur-spring. */
+    --mk-spring: linear(0, 0.044, 0.142, 0.261, 0.38, 0.491, 0.589, 0.671, 0.74, 0.796, 0.841, 0.877, 0.905, 0.928, 0.945, 0.958, 0.968, 0.976, 0.982, 0.986, 0.99, 0.992, 0.994, 0.996, 0.997, 0.998, 0.998, 0.999, 1);
+    --mk-spring-bouncy: linear(0, 0.036, 0.127, 0.251, 0.388, 0.527, 0.656, 0.77, 0.866, 0.943, 1, 1.041, 1.066, 1.08, 1.084, 1.081, 1.073, 1.063, 1.051, 1.04, 1.029, 1.019, 1.011, 1.005, 1, 0.997, 0.995, 0.993, 0.993, 0.993, 0.994, 0.995, 0.996, 0.997, 0.998, 0.998, 1);
+
+    /* Transform amounts are tokens too, so reduced motion can neutralise them. */
+    --mk-press-scale: 0.97;
+    --mk-enter-scale: 0.96;
+    --mk-enter-offset: 4px;
+  }
+
+  /* Re-declared on any element that changes the motion inputs, because a
+     custom property resolves var() where it is declared, not where it is used. */
+  :root,
+  [data-motion],
+  [data-slowmo] {
+    --mk-dur-instant: 0ms;
+    --mk-dur-fast: calc(100ms * var(--mk-slowmo) * var(--mk-motion));
+    --mk-dur-base: calc(160ms * var(--mk-slowmo) * var(--mk-motion));
+    --mk-dur-slow: calc(240ms * var(--mk-slowmo) * var(--mk-motion));
+    --mk-dur-reveal: calc(480ms * var(--mk-slowmo) * var(--mk-motion));
+    --mk-dur-spring: calc(420ms * var(--mk-slowmo) * var(--mk-motion));
+    --mk-dur-fade: calc(140ms * var(--mk-slowmo));
+  }
+
+  /* -------------------------------------------------------------------------
+     3. Tones — remap the accent family only. Add your own the same way.
+     ------------------------------------------------------------------------- */
+  /* :where() keeps tones and the defaults above at equal (zero) specificity,
+     so source order decides: a tone always beats the default accent, and it
+     re-applies inside any nested [data-theme] so a dark panel in a Merklon
+     section stays Merklon. */
+  :where([data-tone="merklon"], [data-tone="merklon"] [data-theme]) {
+    --mk-accent: var(--mk-merklon-9);
+    --mk-accent-hover: var(--mk-merklon-10);
+    --mk-accent-active: light-dark(var(--mk-merklon-11), #2f63e0);
+    --mk-accent-fg: #ffffff;
+    --mk-accent-subtle: var(--mk-merklon-3);
+    --mk-accent-text: var(--mk-merklon-11);
+    --mk-focus-ring: light-dark(#2563eb, #6b9bff);
+  }
+
+  :where([data-tone="neutral"], [data-tone="neutral"] [data-theme]) {
+    --mk-accent: var(--mk-gray-12);
+    --mk-accent-hover: light-dark(#2e2e33, #dcdce0);
+    --mk-accent-active: light-dark(#3f3f46, #c8c8ce);
+    --mk-accent-fg: var(--mk-gray-1);
+    --mk-accent-subtle: var(--mk-gray-3);
+    --mk-accent-text: var(--mk-gray-12);
+    --mk-focus-ring: light-dark(#18181b, #f4f4f5);
+  }
+
+  /* -------------------------------------------------------------------------
+     Reduced motion — the OS setting, or a manual preview via data-motion.
+     ------------------------------------------------------------------------- */
+  @media (prefers-reduced-motion: reduce) {
+    :root:not([data-motion="full"]) {
+      --mk-motion: 0;
+      --mk-press-scale: 1;
+      --mk-enter-scale: 1;
+      --mk-enter-offset: 0px;
+    }
+  }
+
+  [data-motion="reduce"] {
+    --mk-motion: 0;
+    --mk-press-scale: 1;
+    --mk-enter-scale: 1;
+    --mk-enter-offset: 0px;
+  }
+
+  /* Slow motion, for inspecting details. data-slowmo="4" on any element. */
+  [data-slowmo="2"] {
+    --mk-slowmo: 2;
+  }
+
+  [data-slowmo="4"] {
+    --mk-slowmo: 4;
+  }
+
+  [data-slowmo="10"] {
+    --mk-slowmo: 10;
+  }
+
+  /* -------------------------------------------------------------------------
+     Base — opt in with class="mk-root" (or apply to body yourself).
+     ------------------------------------------------------------------------- */
+  .mk-root {
+    background: var(--mk-bg);
+    color: var(--mk-fg);
+    font-family: var(--mk-font-sans);
+    font-feature-settings: var(--mk-font-features);
+    font-size: var(--mk-text-base);
+    line-height: var(--mk-leading-normal);
+    letter-spacing: var(--mk-tracking-normal);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  .mk-root ::selection {
+    background: var(--mk-selection);
+  }
+
+  .mk-tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .mk-visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+}

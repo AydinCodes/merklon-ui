@@ -1,0 +1,162 @@
+@layer mk {
+  .mk-command {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+    border-radius: var(--mk-radius-lg);
+    background: var(--mk-overlay);
+    color: var(--mk-fg);
+    font-family: var(--mk-font-sans);
+    font-size: var(--mk-text-base);
+  }
+
+  .mk-command-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 16px;
+    border-bottom: 1px solid var(--mk-border);
+  }
+
+  .mk-command-search svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    color: var(--mk-fg-subtle);
+  }
+
+  .mk-command-input {
+    flex: 1;
+    min-width: 0;
+    height: 48px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--mk-fg);
+    font: inherit;
+    font-size: max(16px, var(--mk-text-md));
+    outline: none;
+  }
+
+  .mk-command-input::placeholder {
+    color: var(--mk-fg-subtle);
+  }
+
+  .mk-command-list {
+    position: relative; /* offsetParent for keeping the active item in view */
+    flex: 1;
+    min-height: 0;
+    max-height: min(360px, 55dvh);
+    padding: 6px;
+    overflow: auto;
+    overscroll-behavior: contain;
+    scroll-padding: 6px;
+  }
+
+  .mk-command-group:not(:has([data-command-item])) {
+    display: none;
+  }
+
+  .mk-command-group + .mk-command-group {
+    margin-top: 6px;
+  }
+
+  .mk-command-heading {
+    padding: 8px 10px 4px;
+    color: var(--mk-fg-subtle);
+    font-size: var(--mk-text-xs);
+    font-weight: var(--mk-weight-medium);
+  }
+
+  .mk-command-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 38px;
+    padding: 0 10px;
+    border-radius: var(--mk-radius-md);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  @media (pointer: coarse) {
+    .mk-command-item {
+      height: 44px;
+    }
+  }
+
+  /* Instant, deliberately. */
+  .mk-command-item[aria-selected="true"] {
+    background: var(--mk-fill);
+  }
+
+  .mk-command-item[aria-selected="true"] .mk-menu-icon {
+    color: var(--mk-fg);
+  }
+
+  .mk-command-item[aria-disabled="true"] {
+    color: var(--mk-fg-subtle);
+    cursor: not-allowed;
+  }
+
+  .mk-command-empty {
+    padding: 28px 16px;
+    color: var(--mk-fg-subtle);
+    text-align: center;
+  }
+
+  .mk-command-footer {
+    display: flex;
+    align-items: center;
+    gap: var(--mk-space-4);
+    padding: 10px 16px;
+    border-top: 1px solid var(--mk-border);
+    background: var(--mk-overlay);
+    color: var(--mk-fg-subtle);
+    font-family: var(--mk-font-sans);
+    font-size: var(--mk-text-xs);
+  }
+
+  /* ---- Dialog ----------------------------------------------------------- */
+  html:has(dialog.mk-command-dialog[open]) {
+    overflow: hidden;
+    scrollbar-gutter: stable;
+  }
+
+  .mk-command-dialog {
+    box-sizing: border-box;
+    width: min(600px, calc(100vw - 24px));
+    max-width: none;
+    margin: min(18vh, 140px) auto auto;
+    padding: 0;
+    border: 0;
+    border-radius: var(--mk-radius-xl);
+    background: var(--mk-overlay);
+    box-shadow: var(--mk-shadow-overlay);
+    overflow: hidden;
+    /* In: instant. Out: a short fade. */
+    transition: opacity var(--mk-dur-fade) var(--mk-ease-out),
+      display var(--mk-dur-fade) allow-discrete,
+      overlay var(--mk-dur-fade) allow-discrete;
+  }
+
+  @media (max-width: 540px) {
+    .mk-command-dialog {
+      width: calc(100vw - 16px);
+      margin-top: max(8px, env(safe-area-inset-top));
+    }
+  }
+
+  .mk-command-dialog:not([open]) {
+    opacity: 0;
+  }
+
+  .mk-command-dialog .mk-command {
+    border-radius: 0;
+  }
+
+  .mk-command-dialog::backdrop {
+    background: var(--mk-backdrop);
+  }
+}

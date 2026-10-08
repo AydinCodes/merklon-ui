@@ -1,0 +1,55 @@
+@layer mk {
+  .mk-tooltip {
+    position: fixed;
+    inset: auto;
+    margin: 0;
+    max-width: min(280px, calc(100vw - 16px));
+    padding: 5px 8px;
+    border: 0;
+    border-radius: var(--mk-radius-md);
+    background: var(--mk-gray-12);
+    color: var(--mk-gray-1);
+    box-shadow: var(--mk-shadow-md);
+    font-family: var(--mk-font-sans);
+    font-size: var(--mk-text-xs);
+    font-weight: var(--mk-weight-medium);
+    line-height: 1.35;
+    letter-spacing: 0;
+    overflow: visible;
+    pointer-events: none;
+    transform-origin: var(--mk-origin, center);
+    opacity: 0;
+    transform: scale(var(--mk-enter-scale));
+    transition: opacity var(--mk-dur-fade) var(--mk-ease-out),
+      transform var(--mk-dur-base) var(--mk-ease-out),
+      display var(--mk-dur-fade) allow-discrete,
+      overlay var(--mk-dur-fade) allow-discrete;
+  }
+
+  .mk-tooltip:popover-open {
+    opacity: 1;
+    transform: none;
+  }
+
+  @starting-style {
+    .mk-tooltip:popover-open {
+      opacity: 0;
+      transform: scale(var(--mk-enter-scale));
+    }
+  }
+
+  /* Warm: a neighbour was just open. Appear and disappear with no motion. */
+  .mk-tooltip[data-instant] {
+    transition-duration: 0ms;
+  }
+
+  .mk-tooltip .mk-kbd {
+    height: 16px;
+    min-width: 16px;
+    margin-left: 6px;
+    border-color: color-mix(in oklab, currentColor 25%, transparent);
+    background: transparent;
+    color: inherit;
+    opacity: 0.75;
+  }
+}

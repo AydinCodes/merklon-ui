@@ -1,0 +1,158 @@
+/* Shared surface for DropdownMenu and Command. */
+@layer mk {
+  .mk-menu {
+    position: fixed;
+    inset: auto;
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: calc(100vw - 16px);
+    max-height: min(420px, calc(100dvh - 16px));
+    margin: 0;
+    padding: 4px;
+    border: 0;
+    border-radius: var(--mk-radius-lg);
+    background: var(--mk-overlay);
+    color: var(--mk-fg);
+    box-shadow: var(--mk-shadow-overlay);
+    overflow: auto;
+    overscroll-behavior: contain;
+    font-family: var(--mk-font-sans);
+    font-size: var(--mk-text-base);
+    outline: none;
+    transform-origin: var(--mk-origin, top left);
+    /* Opens instantly (no @starting-style). Exits with a short fade. */
+    transition: opacity var(--mk-dur-fade) var(--mk-ease-out),
+      display var(--mk-dur-fade) allow-discrete,
+      overlay var(--mk-dur-fade) allow-discrete;
+  }
+
+  .mk-menu:not(:popover-open) {
+    opacity: 0;
+  }
+
+  .mk-menu[data-closing] {
+    pointer-events: none;
+  }
+
+  .mk-menu-item {
+    --_fg: var(--mk-fg);
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-sizing: border-box;
+    width: 100%;
+    height: 34px;
+    margin: 0;
+    padding: 0 10px;
+    border: 0;
+    border-radius: var(--mk-radius-md);
+    background: transparent;
+    color: var(--_fg);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    outline: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Touch: 44px rows, Apple's minimum for a finger. */
+  @media (pointer: coarse) {
+    .mk-menu-item {
+      height: 44px;
+      font-size: max(15px, var(--mk-text-base));
+    }
+  }
+
+  .mk-menu-item[data-variant="destructive"] {
+    --_fg: var(--mk-danger-text);
+  }
+
+  /* No transition on purpose: the highlight must keep up with the pointer and arrow keys. */
+  .mk-menu-item:focus,
+  .mk-menu-item[data-force="hover"] {
+    background: var(--mk-fill);
+  }
+
+  .mk-menu-item[data-variant="destructive"]:focus {
+    background: var(--mk-danger-subtle);
+  }
+
+  .mk-menu-item[aria-disabled="true"] {
+    color: var(--mk-fg-subtle);
+    cursor: not-allowed;
+  }
+
+  /* Selection acknowledgement: a single blink of the accent. */
+  .mk-menu-item[data-flash] {
+    animation: mk-menu-flash calc(130ms * var(--mk-slowmo)) steps(1, end);
+  }
+
+  .mk-menu-item[data-variant="destructive"][data-flash] {
+    --mk-accent: var(--mk-danger);
+    --mk-accent-fg: var(--mk-danger-fg);
+  }
+
+  @keyframes mk-menu-flash {
+    0% {
+      background: var(--mk-accent);
+      color: var(--mk-accent-fg);
+    }
+    35% {
+      background: transparent;
+      color: var(--_fg);
+    }
+    70% {
+      background: var(--mk-accent);
+      color: var(--mk-accent-fg);
+    }
+  }
+
+  .mk-menu-icon {
+    display: inline-flex;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    color: var(--mk-fg-subtle);
+  }
+
+  .mk-menu-item:focus .mk-menu-icon {
+    color: currentColor;
+  }
+
+  .mk-menu-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .mk-menu-text {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mk-menu-shortcut {
+    display: inline-flex;
+    gap: 2px;
+    margin-left: var(--mk-space-4);
+    color: var(--mk-fg-subtle);
+    font-size: var(--mk-text-xs);
+    letter-spacing: 0.04em;
+  }
+
+  .mk-menu-label {
+    padding: 8px 10px 4px;
+    color: var(--mk-fg-subtle);
+    font-size: var(--mk-text-xs);
+    font-weight: var(--mk-weight-medium);
+  }
+
+  .mk-menu-separator {
+    height: 1px;
+    margin: 4px -4px;
+    background: var(--mk-border);
+  }
+}

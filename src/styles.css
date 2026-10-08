@@ -1,0 +1,41 @@
+/* ===========================================================================
+   Merklon UI — import this once.
+
+   Everything lives in @layer mk, so any unlayered CSS in your site (including
+   token overrides) wins without !important. With Tailwind v4, declare the
+   layer order before importing either, so utilities can still override us:
+
+     @layer theme, base, mk, components, utilities;
+     @import "tailwindcss";
+     @import "./merklon-ui/styles.css";
+   =========================================================================== */
+
+@import "./tokens.css";
+
+@import "./components/spinner.css";
+@import "./components/button.css";
+@import "./components/text-link.css";
+@import "./components/badge.css";
+@import "./components/card.css";
+@import "./components/kbd.css";
+@import "./components/skeleton.css";
+@import "./components/separator.css";
+
+@import "./components/field.css";
+@import "./components/input.css";
+@import "./components/select.css";
+@import "./components/choice.css";
+@import "./components/checkbox.css";
+@import "./components/radio.css";
+@import "./components/switch.css";
+@import "./components/slider.css";
+@import "./components/segmented-control.css";
+
+@import "./components/tooltip.css";
+@import "./components/toast.css";
+@import "./components/dialog.css";
+@import "./components/menu.css";
+@import "./components/command.css";
+@import "./components/tabs.css";
+@import "./components/empty-state.css";
+@import "./components/merklon-mark.css";

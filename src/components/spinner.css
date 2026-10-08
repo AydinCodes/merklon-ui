@@ -1,0 +1,21 @@
+@layer mk {
+  .mk-spinner {
+    display: inline-flex;
+    width: var(--mk-spinner-size, 16px);
+    height: var(--mk-spinner-size, 16px);
+    flex-shrink: 0;
+  }
+
+  .mk-spinner svg {
+    width: 100%;
+    height: 100%;
+    /* Rotation is the message, so it survives reduced motion; only slow-mo scales it. */
+    animation: mk-spin calc(700ms * var(--mk-slowmo)) linear infinite;
+  }
+
+  @keyframes mk-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}

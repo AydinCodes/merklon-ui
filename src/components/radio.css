@@ -1,0 +1,86 @@
+@layer mk {
+  .mk-radio-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mk-radio-group[data-orientation="horizontal"] {
+    flex-flow: row wrap;
+    column-gap: var(--mk-space-6);
+  }
+
+  .mk-radio {
+    display: inline-flex;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .mk-radio-input {
+    position: relative;
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    border: 1px solid var(--mk-border-stronger);
+    border-radius: 50%;
+    background: var(--mk-surface);
+    box-shadow: var(--mk-shadow-xs);
+    appearance: none;
+    cursor: pointer;
+    transition: border-color var(--mk-dur-base) var(--mk-ease-out),
+      background-color var(--mk-dur-base) var(--mk-ease-out),
+      transform var(--mk-dur-spring) var(--mk-spring);
+  }
+
+  /* The inner dot scales in on the spring; selection reads as one gesture. */
+  .mk-radio-input::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--mk-accent-fg);
+    transform: scale(0);
+    transition: transform var(--mk-dur-base) var(--mk-ease-out);
+  }
+
+  @media (hover: hover) {
+    .mk-choice:hover .mk-radio-input:not(:checked, :disabled),
+    .mk-radio-input:hover:not(:checked, :disabled) {
+      border-color: var(--mk-fg-subtle);
+      transition-duration: 0ms;
+    }
+  }
+
+  .mk-radio-input:checked {
+    border-color: var(--mk-accent);
+    background: var(--mk-accent);
+    transition-duration: 0ms, 0ms, var(--mk-dur-spring);
+  }
+
+  .mk-radio-input:checked::after {
+    transform: scale(1);
+    transition: transform var(--mk-dur-spring) var(--mk-spring-bouncy);
+  }
+
+  [data-motion="reduce"] .mk-radio-input:checked::after {
+    transition-duration: 0ms;
+  }
+
+  .mk-choice:active .mk-radio-input:not(:disabled),
+  .mk-radio-input:active:not(:disabled) {
+    transform: scale(0.9);
+    transition-duration: var(--mk-dur-base), var(--mk-dur-base), var(--mk-dur-fast);
+  }
+
+  .mk-radio-input:focus-visible {
+    outline: 2px solid var(--mk-focus-ring);
+    outline-offset: 2px;
+  }
+
+  .mk-radio-input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

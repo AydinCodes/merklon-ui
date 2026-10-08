@@ -1,0 +1,49 @@
+@layer mk {
+  .mk-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--mk-space-4);
+    padding: var(--mk-space-12) var(--mk-space-6);
+    border: 1px dashed var(--mk-border-strong);
+    border-radius: var(--mk-radius-card);
+    text-align: center;
+  }
+
+  .mk-empty-icon {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--mk-radius-lg);
+    background: var(--mk-surface);
+    color: var(--mk-fg-muted);
+    box-shadow: var(--mk-shadow-sm), 0 0 0 1px var(--mk-border), var(--mk-highlight);
+  }
+
+  .mk-empty-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .mk-empty-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--mk-space-1);
+    max-width: 340px;
+  }
+
+  .mk-empty-title {
+    margin: 0;
+    color: var(--mk-fg);
+    font-size: var(--mk-text-md);
+    font-weight: var(--mk-weight-medium);
+  }
+
+  .mk-empty-description {
+    margin: 0;
+    color: var(--mk-fg-muted);
+    font-size: var(--mk-text-base);
+    line-height: var(--mk-leading-normal);
+  }
+}

@@ -1,0 +1,90 @@
+@layer mk {
+  .mk-select {
+    position: relative;
+    display: inline-flex;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .mk-select-control {
+    padding-right: 36px;
+    cursor: pointer;
+    text-overflow: ellipsis;
+  }
+
+  .mk-select-chevron {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    width: 16px;
+    height: 16px;
+    color: var(--mk-fg-subtle);
+    pointer-events: none;
+    transform: translateY(-50%);
+  }
+
+  .mk-select-control:disabled + .mk-select-chevron {
+    opacity: 0.5;
+  }
+}
+
+/* ---- Select (custom listbox) ------------------------------------------- */
+@layer mk {
+  .mk-select-trigger {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-right: 36px;
+    text-align: left;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mk-select-trigger .mk-select-chevron {
+    transition: transform var(--mk-dur-base) var(--mk-ease-out);
+  }
+
+  .mk-select-trigger[aria-expanded="true"] .mk-select-chevron {
+    transform: translateY(-50%) rotate(180deg);
+  }
+
+  .mk-select-value {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mk-select-trigger[data-placeholder] .mk-select-value {
+    color: var(--mk-fg-subtle);
+  }
+
+  .mk-select-trigger:disabled {
+    cursor: not-allowed;
+  }
+
+  .mk-select-list {
+    max-height: min(320px, calc(100dvh - 32px));
+  }
+
+  .mk-select-item:focus {
+    background: var(--mk-fill);
+  }
+
+  .mk-select-check {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    color: var(--mk-accent-text);
+    opacity: 0;
+  }
+
+  .mk-select-item[aria-selected="true"] .mk-select-check {
+    opacity: 1;
+  }
+
+  .mk-select-item[data-flash] .mk-select-check {
+    color: currentColor;
+  }
+}

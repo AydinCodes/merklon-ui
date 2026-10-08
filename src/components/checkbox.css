@@ -1,0 +1,100 @@
+@layer mk {
+  .mk-checkbox {
+    position: relative;
+    display: inline-flex;
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+  }
+
+  .mk-checkbox-input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border: 1px solid var(--mk-border-stronger);
+    border-radius: 5px;
+    background: var(--mk-surface);
+    box-shadow: var(--mk-shadow-xs);
+    appearance: none;
+    cursor: inherit;
+    transition: background-color var(--mk-dur-base) var(--mk-ease-out),
+      border-color var(--mk-dur-base) var(--mk-ease-out),
+      transform var(--mk-dur-spring) var(--mk-spring);
+  }
+
+  .mk-choice:not([data-disabled]) .mk-checkbox-input,
+  .mk-checkbox-input:not(:disabled) {
+    cursor: pointer;
+  }
+
+  @media (hover: hover) {
+    .mk-choice:hover .mk-checkbox-input:not(:checked, :indeterminate, :disabled),
+    .mk-checkbox-input:hover:not(:checked, :indeterminate, :disabled) {
+      border-color: var(--mk-fg-subtle);
+      transition-duration: 0ms;
+    }
+  }
+
+  .mk-checkbox-input:checked,
+  .mk-checkbox-input:indeterminate {
+    border-color: var(--mk-accent);
+    background: var(--mk-accent);
+    transition-duration: 0ms, 0ms, var(--mk-dur-spring);
+  }
+
+  .mk-choice:active .mk-checkbox-input:not(:disabled),
+  .mk-checkbox-input:active:not(:disabled) {
+    transform: scale(0.9);
+    transition-duration: var(--mk-dur-base), var(--mk-dur-base), var(--mk-dur-fast);
+  }
+
+  .mk-checkbox-input:focus-visible,
+  .mk-checkbox-input[data-force="focus"] {
+    outline: 2px solid var(--mk-focus-ring);
+    outline-offset: 2px;
+  }
+
+  .mk-checkbox-input:disabled {
+    opacity: 0.5;
+  }
+
+  .mk-checkbox-input[aria-invalid="true"] {
+    border-color: var(--mk-danger);
+  }
+
+  .mk-checkbox-icon {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    color: var(--mk-accent-fg);
+    pointer-events: none;
+    stroke: currentColor;
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* The tick draws itself — a quick acknowledgement, not a performance. */
+  .mk-checkbox-check {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset var(--mk-dur-fast) var(--mk-ease-out);
+  }
+
+  .mk-checkbox-input:checked:not(:indeterminate) + .mk-checkbox-icon .mk-checkbox-check {
+    stroke-dashoffset: 0;
+    transition-duration: var(--mk-dur-base);
+  }
+
+  .mk-checkbox-dash {
+    opacity: 0;
+  }
+
+  .mk-checkbox-input:indeterminate + .mk-checkbox-icon .mk-checkbox-dash {
+    opacity: 1;
+  }
+}

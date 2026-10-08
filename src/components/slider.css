@@ -1,0 +1,114 @@
+@layer mk {
+  .mk-slider {
+    --_track: 4px;
+    --_thumb: 18px;
+    --_fill: var(--mk-accent);
+
+    display: block;
+    width: 100%;
+    height: var(--mk-hit); /* the whole 40px band is the hit target */
+    margin: 0;
+    background: transparent;
+    appearance: none;
+    cursor: pointer;
+    touch-action: pan-y;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  @media (pointer: coarse) {
+    .mk-slider {
+      --_thumb: 26px;
+      --_track: 6px;
+    }
+  }
+
+  .mk-slider:focus {
+    outline: none;
+  }
+
+  .mk-slider[aria-invalid="true"] {
+    --_fill: var(--mk-danger);
+  }
+
+  .mk-slider:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  /* ---- Track ------------------------------------------------------------ */
+  .mk-slider::-webkit-slider-runnable-track {
+    height: var(--_track);
+    border-radius: var(--mk-radius-full);
+    background: linear-gradient(to right, var(--_fill) var(--_pct), var(--mk-fill-active) var(--_pct));
+    transition: height var(--mk-dur-base) var(--mk-ease-out);
+  }
+
+  .mk-slider::-moz-range-track {
+    height: var(--_track);
+    border-radius: var(--mk-radius-full);
+    background: var(--mk-fill-active);
+  }
+
+  .mk-slider::-moz-range-progress {
+    height: var(--_track);
+    border-radius: var(--mk-radius-full);
+    background: var(--_fill);
+  }
+
+  /* ---- Thumb ------------------------------------------------------------ */
+  .mk-slider::-webkit-slider-thumb {
+    width: var(--_thumb);
+    height: var(--_thumb);
+    margin-top: calc((var(--_track) - var(--_thumb)) / 2);
+    border: 0;
+    border-radius: 50%;
+    background: light-dark(#ffffff, #f4f4f5);
+    box-shadow: 0 0 0 1px var(--mk-border-strong), 0 1px 3px rgb(0 0 0 / 0.2);
+    appearance: none;
+    transition: transform var(--mk-dur-spring) var(--mk-spring),
+      box-shadow var(--mk-dur-base) var(--mk-ease-out);
+  }
+
+  .mk-slider::-moz-range-thumb {
+    width: var(--_thumb);
+    height: var(--_thumb);
+    border: 0;
+    border-radius: 50%;
+    background: light-dark(#ffffff, #f4f4f5);
+    box-shadow: 0 0 0 1px var(--mk-border-strong), 0 1px 3px rgb(0 0 0 / 0.2);
+    transition: transform var(--mk-dur-spring) var(--mk-spring),
+      box-shadow var(--mk-dur-base) var(--mk-ease-out);
+  }
+
+  @media (hover: hover) {
+    .mk-slider:hover:not(:disabled)::-webkit-slider-thumb {
+      box-shadow: 0 0 0 1px var(--mk-border-stronger), 0 0 0 5px color-mix(in oklab, var(--_fill) 14%, transparent),
+        0 1px 3px rgb(0 0 0 / 0.2);
+    }
+
+    .mk-slider:hover:not(:disabled)::-moz-range-thumb {
+      box-shadow: 0 0 0 1px var(--mk-border-stronger), 0 0 0 5px color-mix(in oklab, var(--_fill) 14%, transparent),
+        0 1px 3px rgb(0 0 0 / 0.2);
+    }
+  }
+
+  /* Pressed: the thumb grows under the finger, so it is never hidden by it. */
+  .mk-slider:active:not(:disabled)::-webkit-slider-thumb {
+    transform: scale(calc(1 + 0.2 * var(--mk-motion)));
+    transition-duration: var(--mk-dur-fast), 0ms;
+  }
+
+  .mk-slider:active:not(:disabled)::-moz-range-thumb {
+    transform: scale(calc(1 + 0.2 * var(--mk-motion)));
+  }
+
+  .mk-slider:focus-visible::-webkit-slider-thumb {
+    outline: 2px solid var(--mk-focus-ring);
+    outline-offset: 2px;
+  }
+
+  .mk-slider:focus-visible::-moz-range-thumb {
+    outline: 2px solid var(--mk-focus-ring);
+    outline-offset: 2px;
+  }
+}

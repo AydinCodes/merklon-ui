@@ -1,0 +1,20 @@
+@layer mk {
+  .mk-kbd {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 5px;
+    border: 1px solid var(--mk-border);
+    border-bottom-width: 2px;
+    border-radius: var(--mk-radius-sm);
+    background: var(--mk-bg-subtle);
+    color: var(--mk-fg-muted);
+    font-family: var(--mk-font-sans);
+    font-size: 11px;
+    font-weight: var(--mk-weight-medium);
+    line-height: 1;
+    letter-spacing: 0;
+  }
+}

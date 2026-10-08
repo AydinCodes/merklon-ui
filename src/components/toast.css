@@ -1,0 +1,242 @@
+@layer mk {
+  .mk-toaster {
+    position: fixed;
+    z-index: 2147483000;
+    bottom: max(16px, env(safe-area-inset-bottom));
+    right: 16px;
+    width: min(360px, calc(100vw - 32px));
+    pointer-events: none;
+  }
+
+  .mk-toaster[data-position="bottom-center"] {
+    right: auto;
+    left: 50%;
+    translate: -50% 0;
+  }
+
+  .mk-toaster[data-position="top-center"] {
+    top: max(16px, env(safe-area-inset-top));
+    bottom: auto;
+    right: auto;
+    left: 50%;
+    translate: -50% 0;
+  }
+
+  @media (max-width: 480px) {
+    .mk-toaster {
+      right: 16px;
+      left: 16px;
+      width: auto;
+      translate: none;
+    }
+  }
+
+  .mk-toaster-list {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .mk-toast {
+    --_swipe: 0px;
+    --_y: calc(var(--_index) * -1 * 12px);
+    --_scale: calc(1 - var(--_index) * 0.05);
+
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    pointer-events: auto;
+    touch-action: pan-y;
+    transform-origin: 50% 0%;
+    transform: translate(var(--_swipe), var(--_y)) scale(var(--_scale));
+    opacity: 1;
+    transition: transform var(--mk-dur-reveal) var(--mk-ease-out),
+      opacity var(--mk-dur-slow) var(--mk-ease-out),
+      height var(--mk-dur-reveal) var(--mk-ease-out);
+  }
+
+  .mk-toaster[data-position="top-center"] .mk-toast {
+    top: 0;
+    bottom: auto;
+    transform-origin: 50% 100%;
+    --_y: calc(var(--_index) * 12px);
+  }
+
+  /* Arrives from its edge. Entrance is a rare event, so it may move. */
+  @starting-style {
+    .mk-toast {
+      opacity: 0;
+      transform: translate(0, calc(100% * var(--mk-motion))) scale(1);
+    }
+
+    .mk-toaster[data-position="top-center"] .mk-toast {
+      transform: translate(0, calc(-100% * var(--mk-motion))) scale(1);
+    }
+  }
+
+  /* Collapsed: back toasts borrow the front toast's height and peek out. */
+  .mk-toast:not([data-front]) .mk-toast-body:not([data-expanded]) {
+    height: var(--_front-height);
+    overflow: hidden;
+  }
+
+  .mk-toast:not([data-front]) .mk-toast-body:not([data-expanded]) > * {
+    opacity: 0;
+  }
+
+  .mk-toaster-list[data-expanded] .mk-toast {
+    --_y: calc(var(--_offset) * -1);
+    --_scale: 1;
+  }
+
+  .mk-toaster[data-position="top-center"] .mk-toaster-list[data-expanded] .mk-toast {
+    --_y: var(--_offset);
+  }
+
+  /* A hover bridge between expanded toasts, so moving across gaps keeps it open. */
+  .mk-toaster-list[data-expanded]::before {
+    content: "";
+    position: absolute;
+    inset: auto 0 0;
+    height: 100vh;
+    max-height: 600px;
+  }
+
+  .mk-toast[data-hidden] {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .mk-toast[data-swiping] {
+    transition: none;
+  }
+
+  /* Exit: a quiet fade, never a fly-off — unless it was swiped away. */
+  .mk-toast[data-leaving] {
+    opacity: 0;
+    pointer-events: none;
+    transition: transform var(--mk-dur-slow) var(--mk-ease-out), opacity var(--mk-dur-fade) var(--mk-ease-out);
+  }
+
+  .mk-toast-body {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    box-sizing: border-box;
+    padding: 14px 14px 14px 16px;
+    border-radius: var(--mk-radius-lg);
+    background: var(--mk-overlay);
+    color: var(--mk-fg);
+    box-shadow: var(--mk-shadow-overlay);
+    font-family: var(--mk-font-sans);
+    font-size: var(--mk-text-base);
+    line-height: var(--mk-leading-snug);
+  }
+
+  .mk-toast-body > * {
+    transition: opacity var(--mk-dur-base) var(--mk-ease-out);
+  }
+
+  .mk-toast-icon {
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    flex-shrink: 0;
+    color: var(--mk-fg-muted);
+  }
+
+  .mk-toast[data-type="success"] .mk-toast-icon {
+    color: var(--mk-success);
+  }
+
+  .mk-toast[data-type="error"] .mk-toast-icon {
+    color: var(--mk-danger);
+  }
+
+  .mk-toast-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .mk-toast-title {
+    font-weight: var(--mk-weight-medium);
+  }
+
+  .mk-toast-description {
+    margin-top: 2px;
+    color: var(--mk-fg-muted);
+    font-size: var(--mk-text-sm);
+  }
+
+  .mk-toast-action {
+    flex-shrink: 0;
+    height: 28px;
+    padding: 0 10px;
+    border: 0;
+    border-radius: var(--mk-radius-full);
+    background: var(--mk-accent);
+    color: var(--mk-accent-fg);
+    font: inherit;
+    font-size: var(--mk-text-sm);
+    font-weight: var(--mk-weight-medium);
+    cursor: pointer;
+    transition: transform var(--mk-dur-spring) var(--mk-spring);
+  }
+
+  .mk-toast-action:active {
+    transform: scale(var(--mk-press-scale));
+    transition-duration: var(--mk-dur-fast);
+  }
+
+  .mk-toast-close {
+    position: absolute;
+    top: -7px;
+    left: -7px;
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    border: 1px solid var(--mk-border-strong);
+    border-radius: 50%;
+    background: var(--mk-overlay);
+    color: var(--mk-fg-muted);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity var(--mk-dur-base) var(--mk-ease-out);
+  }
+
+  .mk-toast-close::before {
+    content: "";
+    position: absolute;
+    inset: -9px;
+  }
+
+  .mk-toast-close svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  @media (hover: hover) {
+    .mk-toast:hover .mk-toast-close {
+      opacity: 1;
+      transition-duration: 0ms;
+    }
+  }
+
+  @media (hover: none) {
+    .mk-toast[data-front] .mk-toast-close {
+      opacity: 1;
+    }
+  }
+
+  .mk-toast-close:focus-visible,
+  .mk-toast-action:focus-visible {
+    opacity: 1;
+    outline: 2px solid var(--mk-focus-ring);
+    outline-offset: 2px;
+  }
+}

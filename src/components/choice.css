@@ -1,0 +1,38 @@
+/* Shared by Checkbox, Radio and Switch rows: the label is the hit target. */
+@layer mk {
+  .mk-choice {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: var(--mk-space-3);
+    min-height: var(--mk-hit);
+    padding: 10px 0;
+    box-sizing: border-box;
+    color: var(--mk-fg);
+    font-size: var(--mk-text-base);
+    line-height: 20px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mk-choice[data-disabled] {
+    color: var(--mk-fg-subtle);
+    cursor: not-allowed;
+  }
+
+  .mk-choice-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .mk-choice-label {
+    font-weight: var(--mk-weight-medium);
+  }
+
+  .mk-choice-description {
+    color: var(--mk-fg-subtle);
+    font-size: var(--mk-text-sm);
+    line-height: var(--mk-leading-snug);
+  }
+}

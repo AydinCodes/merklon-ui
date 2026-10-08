@@ -1,0 +1,191 @@
+@layer mk {
+  .mk-button {
+    --_h: var(--mk-control-md);
+    --_px: 16px;
+    --_fs: var(--mk-text-base);
+    --_bg: var(--mk-accent);
+    --_bg-hover: var(--mk-accent-hover);
+    --_bg-active: var(--mk-accent-active);
+    --_fg: var(--mk-accent-fg);
+    --_fg-hover: var(--_fg);
+    --_border: transparent;
+    --_border-hover: var(--_border);
+    --_shadow: var(--mk-shadow-xs), var(--mk-highlight);
+
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    height: var(--_h);
+    min-width: var(--_h);
+    margin: 0;
+    padding: 0 var(--_px);
+    border: 1px solid var(--_border);
+    border-radius: var(--mk-radius-button);
+    background: var(--_bg);
+    color: var(--_fg);
+    box-shadow: var(--_shadow);
+    font-family: inherit;
+    font-size: var(--_fs);
+    font-weight: var(--mk-weight-medium);
+    line-height: 1;
+    letter-spacing: var(--mk-tracking-normal);
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+
+    /* Colour changes fade *out* gently; they arrive instantly (see :hover).
+       Transform always settles on the spring, so a release mid-press is
+       picked up from wherever the button is — never a restart. */
+    transition-property: background-color, border-color, color, box-shadow, opacity, transform;
+    transition-duration: var(--mk-dur-base), var(--mk-dur-base), var(--mk-dur-base),
+      var(--mk-dur-base), var(--mk-dur-fade), var(--mk-dur-spring);
+    transition-timing-function: var(--mk-ease-out), var(--mk-ease-out), var(--mk-ease-out),
+      var(--mk-ease-out), var(--mk-ease-out), var(--mk-spring);
+  }
+
+  /* Fitts: anything shorter than the hit target gets an invisible extension. */
+  .mk-button::before {
+    content: "";
+    position: absolute;
+    inset: min(0px, calc((var(--_h) - var(--mk-hit)) / 2)) 0;
+  }
+
+  .mk-button-label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--mk-space-2);
+    transition: opacity var(--mk-dur-fade) var(--mk-ease-out);
+  }
+
+  .mk-button svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  /* ---- Variants --------------------------------------------------------- */
+  .mk-button[data-variant="secondary"] {
+    --_bg: var(--mk-fill);
+    --_bg-hover: var(--mk-fill-hover);
+    --_bg-active: var(--mk-fill-active);
+    --_fg: var(--mk-fg);
+    --_shadow: none;
+  }
+
+  .mk-button[data-variant="outline"] {
+    --_bg: transparent;
+    --_bg-hover: var(--mk-fill);
+    --_bg-active: var(--mk-fill-hover);
+    --_fg: var(--mk-fg);
+    --_border: var(--mk-border-strong);
+    --_border-hover: var(--mk-border-stronger);
+    --_shadow: none;
+  }
+
+  .mk-button[data-variant="ghost"] {
+    --_bg: transparent;
+    --_bg-hover: var(--mk-fill);
+    --_bg-active: var(--mk-fill-hover);
+    --_fg: var(--mk-fg-muted);
+    --_fg-hover: var(--mk-fg);
+    --_shadow: none;
+  }
+
+  .mk-button[data-variant="destructive"] {
+    --_bg: var(--mk-danger);
+    --_bg-hover: var(--mk-danger-hover);
+    --_bg-active: var(--mk-danger-hover);
+    --_fg: var(--mk-danger-fg);
+  }
+
+  /* ---- Sizes ------------------------------------------------------------ */
+  .mk-button[data-size="sm"] {
+    --_h: var(--mk-control-sm);
+    --_px: 12px;
+    --_fs: var(--mk-text-sm);
+  }
+
+  .mk-button[data-size="lg"] {
+    --_h: var(--mk-control-lg);
+    --_px: 22px;
+    --_fs: var(--mk-text-md);
+  }
+
+  .mk-icon-button {
+    width: var(--_h);
+    padding: 0;
+  }
+
+  .mk-icon-button::before {
+    inset: min(0px, calc((var(--_h) - var(--mk-hit)) / 2));
+  }
+
+  /* ---- States ----------------------------------------------------------- */
+  @media (hover: hover) {
+    .mk-button:hover:not(:disabled, [aria-disabled="true"]) {
+      background: var(--_bg-hover);
+      border-color: var(--_border-hover);
+      color: var(--_fg-hover);
+      transition-duration: 0ms, 0ms, 0ms, 0ms, var(--mk-dur-fade), var(--mk-dur-spring);
+    }
+  }
+
+  .mk-button[data-force="hover"] {
+    background: var(--_bg-hover);
+    border-color: var(--_border-hover);
+    color: var(--_fg-hover);
+  }
+
+  /* Pressed: respond on pointer-down, fast. The release uses the spring above. */
+  .mk-button:active:not(:disabled, [aria-disabled="true"]),
+  .mk-button[data-force="active"] {
+    background: var(--_bg-active);
+    transform: scale(var(--mk-press-scale));
+    transition-duration: 0ms, 0ms, 0ms, 0ms, var(--mk-dur-fade), var(--mk-dur-fast);
+    transition-timing-function: var(--mk-ease-out);
+  }
+
+  .mk-button:focus-visible,
+  .mk-button[data-force="focus"] {
+    outline: 2px solid var(--mk-focus-ring);
+    outline-offset: 2px;
+  }
+
+  .mk-button:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  .mk-button:disabled,
+  .mk-button[aria-disabled="true"]:not([data-loading]) {
+    opacity: 0.45;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  .mk-button[data-loading] {
+    cursor: progress;
+  }
+
+  .mk-button[data-loading] .mk-button-label {
+    opacity: 0;
+  }
+
+  .mk-button-spinner {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    animation: mk-fade-in var(--mk-dur-fade) var(--mk-ease-out) both;
+  }
+
+  @keyframes mk-fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+}

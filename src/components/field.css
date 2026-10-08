@@ -1,0 +1,60 @@
+@layer mk {
+  .mk-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--mk-space-2);
+    min-width: 0;
+  }
+
+  .mk-label {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--mk-space-2);
+    color: var(--mk-fg);
+    font-size: var(--mk-text-sm);
+    font-weight: var(--mk-weight-medium);
+    line-height: var(--mk-leading-snug);
+    cursor: default;
+  }
+
+  .mk-field[data-disabled] .mk-label {
+    color: var(--mk-fg-subtle);
+  }
+
+  .mk-label-optional {
+    color: var(--mk-fg-subtle);
+    font-weight: var(--mk-weight-regular);
+  }
+
+  .mk-field-description {
+    margin: 0;
+    color: var(--mk-fg-subtle);
+    font-size: var(--mk-text-sm);
+    line-height: var(--mk-leading-snug);
+  }
+
+  .mk-field-error {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    margin: 0;
+    color: var(--mk-danger-text);
+    font-size: var(--mk-text-sm);
+    line-height: var(--mk-leading-snug);
+    animation: mk-field-error-in var(--mk-dur-base) var(--mk-ease-out);
+  }
+
+  .mk-field-error svg {
+    width: 14px;
+    height: 14px;
+    margin-top: 1px;
+    flex-shrink: 0;
+  }
+
+  @keyframes mk-field-error-in {
+    from {
+      opacity: 0;
+      transform: translateY(calc(-1 * var(--mk-enter-offset)));
+    }
+  }
+}

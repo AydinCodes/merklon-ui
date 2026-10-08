@@ -1,0 +1,189 @@
+@layer mk {
+  /* Lock page scroll while any modal is open; the gutter stays, so nothing jumps. */
+  html:has(dialog.mk-dialog[open]) {
+    overflow: hidden;
+    scrollbar-gutter: stable;
+  }
+
+  .mk-dialog {
+    --_w: 440px;
+
+    box-sizing: border-box;
+    width: min(var(--_w), calc(100vw - 32px));
+    max-width: none;
+    max-height: calc(100dvh - 32px);
+    margin: auto;
+    padding: 0;
+    border: 0;
+    border-radius: var(--mk-radius-xl);
+    background: transparent;
+    color: var(--mk-fg);
+    overflow: visible;
+    transform-origin: var(--mk-origin, 50% 50%);
+    opacity: 0;
+    transition: opacity var(--mk-dur-fade) var(--mk-ease-out),
+      transform var(--mk-dur-slow) var(--mk-ease-out),
+      display var(--mk-dur-fade) allow-discrete,
+      overlay var(--mk-dur-fade) allow-discrete;
+  }
+
+  .mk-dialog[data-size="sm"] {
+    --_w: 380px;
+  }
+
+  .mk-dialog[data-size="lg"] {
+    --_w: 640px;
+  }
+
+  .mk-dialog[open] {
+    opacity: 1;
+  }
+
+  /* Entrance: opening a dialog is a deliberate, low-frequency act, so it
+     grows out of its trigger. Closing only fades — you are done with it. */
+  @starting-style {
+    .mk-dialog[open] {
+      opacity: 0;
+      transform: scale(calc(1 - (1 - var(--mk-enter-scale)) * 2));
+    }
+  }
+
+  /* Phones: a bottom sheet, within reach of the thumb. It rises from the
+     bottom edge instead of growing out of the trigger. */
+  @media (max-width: 540px) {
+    .mk-dialog {
+      width: calc(100vw - 16px);
+      max-height: calc(100dvh - 24px);
+      margin: auto auto max(8px, env(safe-area-inset-bottom));
+      border-radius: var(--mk-radius-2xl);
+    }
+
+    @starting-style {
+      .mk-dialog[open] {
+        opacity: 0;
+        transform: translateY(calc(24px * var(--mk-motion)));
+      }
+    }
+
+    .mk-dialog-panel {
+      padding: var(--mk-space-5);
+      padding-bottom: max(var(--mk-space-5), env(safe-area-inset-bottom));
+    }
+  }
+
+  .mk-dialog::backdrop {
+    background: var(--mk-backdrop);
+    opacity: 0;
+    transition: opacity var(--mk-dur-slow) var(--mk-ease-out),
+      display var(--mk-dur-slow) allow-discrete,
+      overlay var(--mk-dur-slow) allow-discrete;
+  }
+
+  .mk-dialog[open]::backdrop {
+    opacity: 1;
+  }
+
+  @starting-style {
+    .mk-dialog[open]::backdrop {
+      opacity: 0;
+    }
+  }
+
+  .mk-dialog-panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--mk-space-5);
+    box-sizing: border-box;
+    max-height: inherit;
+    padding: var(--mk-space-6);
+    border-radius: inherit;
+    background: var(--mk-overlay);
+    box-shadow: var(--mk-shadow-overlay);
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+
+  .mk-dialog-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--mk-space-2);
+    padding-right: var(--mk-space-8);
+  }
+
+  .mk-dialog-title {
+    margin: 0;
+    font-family: var(--mk-font-display);
+    font-size: var(--mk-text-lg);
+    font-weight: var(--mk-weight-medium);
+    line-height: var(--mk-leading-tight);
+    letter-spacing: var(--mk-tracking-snug);
+  }
+
+  .mk-dialog-description {
+    margin: 0;
+    color: var(--mk-fg-muted);
+    font-size: var(--mk-text-base);
+    line-height: var(--mk-leading-normal);
+  }
+
+  .mk-dialog-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--mk-space-4);
+  }
+
+  .mk-dialog-footer {
+    display: flex;
+    flex-wrap: wrap-reverse;
+    justify-content: flex-end;
+    gap: var(--mk-space-2);
+  }
+
+  @media (max-width: 480px) {
+    .mk-dialog-footer > * {
+      flex: 1 1 auto;
+    }
+  }
+
+  .mk-dialog-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 0;
+    border-radius: var(--mk-radius-full);
+    background: transparent;
+    color: var(--mk-fg-subtle);
+    cursor: pointer;
+    transition: background-color var(--mk-dur-base) var(--mk-ease-out), color var(--mk-dur-base) var(--mk-ease-out);
+  }
+
+  .mk-dialog-close::before {
+    content: "";
+    position: absolute;
+    inset: -4px;
+  }
+
+  .mk-dialog-close svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  @media (hover: hover) {
+    .mk-dialog-close:hover {
+      background: var(--mk-fill);
+      color: var(--mk-fg);
+      transition-duration: 0ms;
+    }
+  }
+
+  .mk-dialog-close:focus-visible {
+    outline: 2px solid var(--mk-focus-ring);
+    outline-offset: 2px;
+  }
+}

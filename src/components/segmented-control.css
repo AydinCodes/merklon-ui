@@ -1,0 +1,86 @@
+@layer mk {
+  .mk-segmented {
+    --_h: 32px;
+
+    display: inline-flex;
+    gap: 2px;
+    padding: 2px;
+    border-radius: var(--mk-radius-full);
+    background: var(--mk-fill);
+    box-shadow: inset 0 0 0 1px var(--mk-border);
+  }
+
+  .mk-segmented[data-size="sm"] {
+    --_h: 28px;
+  }
+
+  .mk-segmented-item {
+    position: relative;
+    display: inline-flex;
+  }
+
+  /* Small segments still get a 40px tall hit area. */
+  .mk-segmented-item::before {
+    content: "";
+    position: absolute;
+    inset: calc((var(--_h) - var(--mk-hit)) / 2) 0;
+  }
+
+  .mk-segmented-input {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .mk-segmented-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: var(--_h);
+    height: var(--_h);
+    padding: 0 10px;
+    box-sizing: border-box;
+    border-radius: var(--mk-radius-full);
+    color: var(--mk-fg-subtle);
+    font-size: var(--mk-text-sm);
+    font-weight: var(--mk-weight-medium);
+    white-space: nowrap;
+    pointer-events: none;
+    transition: background-color var(--mk-dur-base) var(--mk-ease-out),
+      color var(--mk-dur-base) var(--mk-ease-out),
+      box-shadow var(--mk-dur-base) var(--mk-ease-out),
+      transform var(--mk-dur-spring) var(--mk-spring);
+  }
+
+  .mk-segmented-label svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  @media (hover: hover) {
+    .mk-segmented-item:hover .mk-segmented-input:not(:checked) + .mk-segmented-label {
+      color: var(--mk-fg-muted);
+      transition-duration: 0ms;
+    }
+  }
+
+  .mk-segmented-input:checked + .mk-segmented-label {
+    background: var(--mk-surface-raised);
+    color: var(--mk-fg);
+    box-shadow: var(--mk-shadow-sm), 0 0 0 1px var(--mk-border);
+    transition-duration: 0ms;
+  }
+
+  .mk-segmented-input:active + .mk-segmented-label {
+    transform: scale(var(--mk-press-scale));
+    transition-duration: var(--mk-dur-fast);
+  }
+
+  .mk-segmented-input:focus-visible + .mk-segmented-label {
+    outline: 2px solid var(--mk-focus-ring);
+    outline-offset: 1px;
+  }
+}

@@ -1,0 +1,15 @@
+@layer mk {
+  .mk-mark {
+    display: inline-block;
+    flex-shrink: 0;
+    vertical-align: middle;
+  }
+
+  .mk-mark-from {
+    stop-color: light-dark(#2563eb, #4f86f7);
+  }
+
+  .mk-mark-to {
+    stop-color: light-dark(#1e40af, #2563eb);
+  }
+}

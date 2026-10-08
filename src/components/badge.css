@@ -1,0 +1,60 @@
+@layer mk {
+  .mk-badge {
+    --_bg: var(--mk-fill);
+    --_fg: var(--mk-fg-muted);
+    --_border: transparent;
+    --_dot: var(--mk-fg-subtle);
+
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 22px;
+    padding: 0 8px;
+    border: 1px solid var(--_border);
+    border-radius: var(--mk-radius-full);
+    background: var(--_bg);
+    color: var(--_fg);
+    font-size: var(--mk-text-xs);
+    font-weight: var(--mk-weight-medium);
+    line-height: 1;
+    letter-spacing: 0;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .mk-badge[data-variant="accent"] {
+    --_bg: var(--mk-accent-subtle);
+    --_fg: var(--mk-accent-text);
+    --_dot: var(--mk-accent);
+  }
+
+  .mk-badge[data-variant="success"] {
+    --_bg: var(--mk-success-subtle);
+    --_fg: var(--mk-success-text);
+    --_dot: var(--mk-success);
+  }
+
+  .mk-badge[data-variant="warning"] {
+    --_bg: var(--mk-warning-subtle);
+    --_fg: var(--mk-warning-text);
+    --_dot: var(--mk-warning);
+  }
+
+  .mk-badge[data-variant="danger"] {
+    --_bg: var(--mk-danger-subtle);
+    --_fg: var(--mk-danger-text);
+    --_dot: var(--mk-danger);
+  }
+
+  .mk-badge[data-variant="outline"] {
+    --_bg: transparent;
+    --_border: var(--mk-border-strong);
+  }
+
+  .mk-badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--_dot);
+  }
+}

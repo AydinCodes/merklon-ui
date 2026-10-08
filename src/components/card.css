@@ -1,0 +1,89 @@
+@layer mk {
+  .mk-card {
+    --_pad: var(--mk-space-6);
+    -webkit-tap-highlight-color: transparent;
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--mk-space-4);
+    padding: var(--_pad);
+    border: 1px solid var(--mk-border);
+    border-radius: var(--mk-radius-card);
+    background: var(--mk-surface);
+    color: var(--mk-fg);
+    box-shadow: var(--mk-highlight);
+    text-decoration: none;
+    transition: border-color var(--mk-dur-base) var(--mk-ease-out),
+      box-shadow var(--mk-dur-base) var(--mk-ease-out),
+      background-color var(--mk-dur-base) var(--mk-ease-out);
+  }
+
+  .mk-card[data-variant="raised"] {
+    background: var(--mk-surface-raised);
+    box-shadow: var(--mk-shadow-md), var(--mk-highlight);
+  }
+
+  /* Interactive cards brighten their edge — no lift, nothing moves under the pointer. */
+  .mk-card[data-interactive] {
+    cursor: pointer;
+  }
+
+  @media (hover: hover) {
+    .mk-card[data-interactive]:hover {
+      border-color: var(--mk-border-strong);
+      background: var(--mk-bg-subtle);
+      transition-duration: 0ms;
+    }
+  }
+
+  .mk-card[data-interactive][data-force="hover"] {
+    border-color: var(--mk-border-strong);
+    background: var(--mk-bg-subtle);
+  }
+
+  .mk-card[data-interactive]:active {
+    background: var(--mk-fill);
+  }
+
+  .mk-card:focus-visible,
+  .mk-card[data-force="focus"] {
+    outline: 2px solid var(--mk-focus-ring);
+    outline-offset: 2px;
+  }
+
+  .mk-card-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--mk-space-1);
+  }
+
+  .mk-card-title {
+    margin: 0;
+    font-family: var(--mk-font-display);
+    font-size: var(--mk-text-lg);
+    font-weight: var(--mk-weight-medium);
+    line-height: var(--mk-leading-tight);
+    letter-spacing: var(--mk-tracking-snug);
+  }
+
+  .mk-card-description {
+    margin: 0;
+    color: var(--mk-fg-muted);
+    font-size: var(--mk-text-base);
+    line-height: var(--mk-leading-normal);
+  }
+
+  .mk-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--mk-space-3);
+  }
+
+  .mk-card-footer {
+    display: flex;
+    align-items: center;
+    gap: var(--mk-space-2);
+    margin-top: auto;
+  }
+}

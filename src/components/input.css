@@ -1,0 +1,117 @@
+@layer mk {
+  .mk-input {
+    --_h: var(--mk-control-md);
+    --_border: var(--mk-border-strong);
+    --_ring: var(--mk-focus-ring);
+    /* Two layers at rest and on focus, so the ring interpolates: it grows out
+       from zero spread rather than popping in. */
+    --_focus-ring: 0 0 0 0 color-mix(in oklab, var(--_ring) 0%, transparent);
+
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    height: var(--_h);
+    margin: 0;
+    padding: 0 12px;
+    border: 1px solid var(--_border);
+    border-radius: var(--mk-radius-control);
+    background: var(--mk-surface);
+    color: var(--mk-fg);
+    box-shadow: var(--mk-shadow-xs), var(--_focus-ring);
+    font-family: inherit;
+    font-size: max(16px, var(--mk-text-base)); /* 16px+ stops iOS zooming on focus */
+    line-height: 1.4;
+    letter-spacing: var(--mk-tracking-normal);
+    outline: none;
+    appearance: none;
+    transition: border-color var(--mk-dur-base) var(--mk-ease-out),
+      box-shadow var(--mk-dur-base) var(--mk-ease-out),
+      background-color var(--mk-dur-base) var(--mk-ease-out);
+  }
+
+  @media (min-width: 640px) {
+    .mk-input {
+      font-size: var(--mk-text-base);
+    }
+  }
+
+  .mk-input::placeholder {
+    color: var(--mk-fg-subtle);
+    opacity: 1;
+  }
+
+  .mk-input[data-size="sm"] {
+    --_h: var(--mk-control-sm);
+    padding: 0 10px;
+  }
+
+  .mk-input[data-size="lg"] {
+    --_h: var(--mk-control-lg);
+    padding: 0 14px;
+  }
+
+  @media (hover: hover) {
+    .mk-input:hover:not(:focus, :disabled) {
+      --_border: var(--mk-border-stronger);
+      transition-duration: 0ms;
+    }
+  }
+
+  .mk-input[data-force="hover"] {
+    --_border: var(--mk-border-stronger);
+  }
+
+  /* Text fields show focus whenever focused — you are about to type there.
+     The border tints and a soft ring grows out over --mk-dur-base, as the
+     original Merklon contact form did. It is a transition, so tapping in and
+     out quickly reverses it from wherever it is. */
+  .mk-input:focus,
+  .mk-input[data-force="focus"],
+  .mk-input[aria-expanded="true"] {
+    --_border: var(--_ring);
+    --_focus-ring: 0 0 0 3px color-mix(in oklab, var(--_ring) 22%, transparent);
+  }
+
+  .mk-input[data-status="invalid"] {
+    --_border: var(--mk-danger);
+    --_ring: var(--mk-danger);
+  }
+
+  .mk-input[data-status="valid"] {
+    --_border: var(--mk-success);
+    --_ring: var(--mk-success);
+  }
+
+  .mk-input:disabled {
+    background: var(--mk-bg-subtle);
+    color: var(--mk-fg-subtle);
+    box-shadow: none;
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+
+  .mk-input:read-only:not(:disabled) {
+    background: var(--mk-bg-subtle);
+  }
+
+  /* ---- Textarea --------------------------------------------------------- */
+  .mk-textarea {
+    height: auto;
+    min-height: calc(var(--_rows) * 1.4em + 18px);
+    padding: 8px 12px;
+    resize: vertical;
+  }
+
+  .mk-textarea[data-autogrow] {
+    field-sizing: content;
+    max-height: calc(var(--_max-rows) * 1.4em + 18px);
+    resize: none;
+  }
+
+  /* Browsers without field-sizing keep a fixed height and a resize handle. */
+  @supports not (field-sizing: content) {
+    .mk-textarea[data-autogrow] {
+      resize: vertical;
+    }
+  }
+}

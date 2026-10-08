@@ -1,0 +1,117 @@
+@layer mk {
+  .mk-switch {
+    --_w: 36px;
+    --_h: 20px;
+    --_pad: 2px;
+    --_thumb: calc(var(--_h) - var(--_pad) * 2);
+    --_travel: calc(var(--_w) - var(--_thumb) - var(--_pad) * 2);
+    --_stretch: 4px;
+
+    position: relative;
+    display: inline-flex;
+    flex-shrink: 0;
+    width: var(--_w);
+    height: var(--_h);
+    margin: 0;
+    padding: var(--_pad);
+    border: 0;
+    border-radius: var(--mk-radius-full);
+    background: var(--mk-gray-7);
+    box-shadow: inset 0 0 0 1px var(--mk-border);
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    transition: background-color var(--mk-dur-base) var(--mk-ease-out);
+  }
+
+  /* Hit area: at least 40px tall whatever the visual size. */
+  .mk-switch::before {
+    content: "";
+    position: absolute;
+    inset: calc((var(--_h) - var(--mk-hit)) / 2) -4px;
+  }
+
+  .mk-switch[data-size="sm"] {
+    --_w: 28px;
+    --_h: 16px;
+    --_stretch: 3px;
+  }
+
+  /* Touch: closer to the platform switch, easier to hit and to see. */
+  @media (pointer: coarse) {
+    .mk-switch {
+      --_w: 46px;
+      --_h: 28px;
+      --_stretch: 6px;
+    }
+
+    .mk-switch[data-size="sm"] {
+      --_w: 36px;
+      --_h: 22px;
+      --_stretch: 4px;
+    }
+  }
+
+  .mk-switch[data-state="checked"] {
+    background: var(--mk-accent);
+  }
+
+  @media (hover: hover) {
+    .mk-switch:hover:not(:disabled)[data-state="unchecked"],
+    .mk-switch-row:hover .mk-switch:not(:disabled)[data-state="unchecked"] {
+      background: var(--mk-gray-8);
+      transition-duration: 0ms;
+    }
+  }
+
+  .mk-switch-thumb {
+    display: block;
+    width: var(--_thumb);
+    height: var(--_thumb);
+    border-radius: var(--mk-radius-full);
+    background: light-dark(#ffffff, #f4f4f5);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.2), 0 0 0 0.5px rgb(0 0 0 / 0.04);
+    /* Spring on both width and position: grab it mid-travel and it just
+       retargets from where it is. */
+    transition: transform var(--mk-dur-spring) var(--mk-spring),
+      width var(--mk-dur-spring) var(--mk-spring);
+  }
+
+  .mk-switch[data-state="checked"] .mk-switch-thumb {
+    transform: translateX(var(--_travel));
+  }
+
+  /* On press the thumb stretches toward where it will go — the response
+     comes on pointer-down; the toggle completes on release. */
+  .mk-switch:active:not(:disabled) .mk-switch-thumb {
+    width: calc(var(--_thumb) + var(--_stretch));
+    transition-duration: var(--mk-dur-fast);
+    transition-timing-function: var(--mk-ease-out);
+  }
+
+  .mk-switch[data-state="checked"]:active:not(:disabled) .mk-switch-thumb {
+    transform: translateX(calc(var(--_travel) - var(--_stretch)));
+  }
+
+  .mk-switch:focus-visible,
+  .mk-switch[data-force="focus"] {
+    outline: 2px solid var(--mk-focus-ring);
+    outline-offset: 2px;
+  }
+
+  .mk-switch:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .mk-switch-row {
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--mk-space-6);
+    cursor: default;
+  }
+
+  .mk-switch-row .mk-choice-label {
+    cursor: pointer;
+  }
+}
