@@ -1,0 +1,62 @@
+/* ===========================================================================
+   Merklon UI — optional reset, for sites without Tailwind (whose preflight
+   does the same job). Import it before styles.css:
+
+     @import "@merklon/ui/reset.css";
+     @import "@merklon/ui/styles.css";
+
+   It lives in the sub-layer mk.reset. Inside a layer, rules in a sub-layer
+   always lose to the parent layer's own rules, so components win over the
+   reset whatever order a bundler emits the CSS in.
+   =========================================================================== */
+
+@layer mk.reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+  }
+
+  h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd, ol, ul {
+    margin: 0;
+  }
+
+  ol, ul {
+    padding: 0;
+    list-style: none;
+  }
+
+  img, svg, video, canvas {
+    display: block;
+    max-width: 100%;
+  }
+
+  input, button, textarea, select {
+    font: inherit;
+    color: inherit;
+  }
+
+  button {
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: inherit;
+  }
+
+  table {
+    border-collapse: collapse;
+  }
+}

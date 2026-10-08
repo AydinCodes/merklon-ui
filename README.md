@@ -2,69 +2,18 @@
 
 The shared design system for Merklon sites: design tokens plus about 30 React
 components. Plain CSS and TypeScript source, no build step, no runtime
-dependencies besides React. Live reference: `/design` on merklon.com.
+dependencies besides React. Live reference: `/design` on merklon.com's dev
+server.
 
-## Add it to a site
-
-```bash
-bun add github:AydinCodes/merklon-ui
-```
-
-1. **Let Next compile it** (it ships TypeScript source):
-   ```ts
-   // next.config.ts
-   const nextConfig = { transpilePackages: ["@merklon/ui"] };
-   ```
-2. **Import the styles once** from your global CSS. With Tailwind v4, set the
-   layer order first so utilities can still override components:
-   ```css
-   @layer theme, base, mk, components, utilities;
-   @import "tailwindcss";
-   @import "@merklon/ui/styles.css";
-   ```
-   Without Tailwind, the last line is all you need.
-3. **Load the fonts** (`bun add @fontsource-variable/inter @fontsource-variable/outfit`
-   and import their `wght.css` in the root layout), or override
-   `--mk-font-sans` and `--mk-font-display`.
-4. **Opt in and prevent a flash of the wrong theme** in the root layout:
-   ```tsx
-   import { ThemeScript, Toaster } from "@merklon/ui";
-
-   <html lang="en" className="mk-root" data-tone="merklon" suppressHydrationWarning>
-     <head><ThemeScript /></head>
-     <body>
-       {children}
-       <Toaster />
-     </body>
-   </html>
-   ```
-   Put `mk-root` on `<html>` to theme the whole site, or on a wrapper to theme
-   only part of it.
-
-## Update a site
+- **[SETUP.md](./SETUP.md)**: start a site, deploy, update, edit components
+  from another project, and release.
+- **[PHILOSOPHY.md](./PHILOSOPHY.md)**: how every Merklon site looks, moves,
+  reads and behaves. Point each site's `CLAUDE.md` at it.
 
 ```bash
-bun update @merklon/ui
+bun add github:AydinCodes/merklon-ui     # install
+bun update @merklon/ui                   # update
 ```
-
-That pulls the latest commit on `main`. The site's lockfile pins the exact
-commit, so a site only changes when you run this. Update one site, check it,
-then the rest. Commit the lockfile so Vercel builds the same version.
-
-## Work on the components
-
-1. Edit here, then `bun run typecheck`.
-2. To see changes live in a site before pushing:
-   ```bash
-   # once, in this repo
-   bun link
-   # in the site
-   bun link @merklon/ui
-   ```
-   When you're done, run `bun add github:AydinCodes/merklon-ui` in the site
-   to go back to the GitHub version.
-3. Bump `version` in `package.json`, add a line to the changelog below,
-   commit and push. Then run `bun update @merklon/ui` in each site.
 
 ## Theming
 
@@ -94,8 +43,8 @@ then the rest. Commit the lockfile so Vercel builds the same version.
 | Group | Exports |
 | --- | --- |
 | Actions | `Button`, `IconButton`, `TextLink` |
-| Display | `Badge`, `Card` (+ `CardHeader/Title/Description/Content/Footer`), `Kbd`, `Separator`, `Skeleton`, `Spinner`, `EmptyState`, `MerklonMark` |
-| Forms | `Field`, `Label`, `FieldDescription`, `FieldError`, `Input`, `Textarea`, `Select` (+ `SelectItem/Label/Separator`), `NativeSelect`, `Checkbox`, `RadioGroup` + `Radio`, `Switch`, `Slider`, `SegmentedControl`, `ThemeToggle` |
+| Display | `Badge`, `Card` (+ `CardHeader/Title/Description/Content/Footer`), `Kbd`, `Separator`, `Skeleton`, `Spinner`, `EmptyState`, `MerklonMark`, `MerklonFooter` |
+| Forms | `Field`, `Label`, `FieldDescription`, `FieldError`, `Input`, `Textarea`, `Select` (+ `SelectItem/Label/Separator`), `NativeSelect`, `Checkbox`, `RadioGroup` + `Radio`, `Switch`, `Slider`, `SegmentedControl`, `ThemeToggle`, `ThemeSwitch` |
 | Overlays | `Tooltip`, `Toaster` + `toast()`, `Dialog`, `AlertDialog` (+ `DialogTrigger/Content/Header/Title/Description/Body/Footer/Close`), `DropdownMenu` (+ `Trigger/Content/Item/Label/Separator`), `Command`, `CommandDialog` (+ `Group/Item/Empty/Separator`) |
 | Navigation | `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent` |
 | Helpers | `useTheme`, `useHotkey`, `useControllable`, `Slot` (`asChild`), `cx`, `place` |
@@ -118,6 +67,13 @@ handle instead of auto-growing.
 
 ## Changelog
 
+- **0.3.0** — `ThemeSwitch`: one button for light/dark with a circular reveal,
+  the D shortcut, and a fall-back to following the OS. `MerklonFooter`: the
+  shared footer (mark home, Contact, socials, theme switch). Optional
+  `reset.css` for sites without Tailwind. `useTheme` returns `systemTheme`.
+  Tooltip renders a `<span>`, so it is valid inside paragraphs. The Select
+  trigger no longer gets the read-only tint. SETUP.md and PHILOSOPHY.md
+  replace MOTION.md.
 - **0.2.0** — moved to its own repo, installed from GitHub. New `Select`
   built on the menu surface (tap outside closes it and releases focus); the
   old native one is now `NativeSelect`. Input focus ring grows in. Mobile

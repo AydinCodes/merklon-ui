@@ -62,8 +62,8 @@ export function useTheme(storageKey: string = THEME_STORAGE_KEY) {
     () => false
   );
 
-  const resolvedTheme: ResolvedTheme =
-    theme === "system" ? (systemDark ? "dark" : "light") : theme;
+  const systemTheme: ResolvedTheme = systemDark ? "dark" : "light";
+  const resolvedTheme: ResolvedTheme = theme === "system" ? systemTheme : theme;
 
   const setTheme = useCallback(
     (next: ThemePreference) => {
@@ -83,5 +83,5 @@ export function useTheme(storageKey: string = THEME_STORAGE_KEY) {
     [storageKey]
   );
 
-  return { theme, resolvedTheme, setTheme };
+  return { theme, resolvedTheme, systemTheme, setTheme };
 }

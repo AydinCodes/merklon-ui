@@ -27,7 +27,7 @@ export interface TooltipProps {
 
 export function Tooltip({ content, children, side = "top", align = "center", delay = 400, className }: TooltipProps) {
   const id = useId();
-  const tipRef = useRef<HTMLDivElement>(null);
+  const tipRef = useRef<HTMLSpanElement>(null);
   const anchorRef = useRef<HTMLElement | null>(null);
   const timer = useRef<number | undefined>(undefined);
   const isOpen = useRef(false);
@@ -99,9 +99,10 @@ export function Tooltip({ content, children, side = "top", align = "center", del
       >
         {children}
       </Slot>
-      <div ref={tipRef} id={id} role="tooltip" popover="manual" className={cx("mk-tooltip", className)}>
+      {/* A span, so a tooltip can sit inside a paragraph without breaking the HTML. */}
+      <span ref={tipRef} id={id} role="tooltip" popover="manual" className={cx("mk-tooltip", className)}>
         {content}
-      </div>
+      </span>
     </>
   );
 }

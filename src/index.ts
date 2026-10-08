@@ -21,6 +21,7 @@ export { Skeleton, type SkeletonProps } from "./components/skeleton";
 export { Separator, type SeparatorProps } from "./components/separator";
 export { EmptyState, type EmptyStateProps } from "./components/empty-state";
 export { MerklonMark, type MerklonMarkProps } from "./components/merklon-mark";
+export { MerklonFooter, MERKLON_SOCIALS, type MerklonFooterProps, type FooterSocial } from "./components/merklon-footer";
 
 // Forms
 export { Field, Label, FieldDescription, FieldError, useField, useFieldControl, type FieldProps, type FieldStatus } from "./components/field";
@@ -33,6 +34,7 @@ export { Switch, type SwitchProps } from "./components/switch";
 export { Slider, type SliderProps } from "./components/slider";
 export { SegmentedControl, type SegmentedControlProps, type SegmentedOption } from "./components/segmented-control";
 export { ThemeToggle } from "./components/theme-toggle";
+export { ThemeSwitch, type ThemeSwitchProps } from "./components/theme-switch";
 
 // Overlays & navigation
 export { Tooltip, type TooltipProps } from "./components/tooltip";

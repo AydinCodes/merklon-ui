@@ -30,6 +30,7 @@
 @import "./components/switch.css";
 @import "./components/slider.css";
 @import "./components/segmented-control.css";
+@import "./components/theme-switch.css";
 
 @import "./components/tooltip.css";
 @import "./components/toast.css";
@@ -39,3 +40,4 @@
 @import "./components/tabs.css";
 @import "./components/empty-state.css";
 @import "./components/merklon-mark.css";
+@import "./components/merklon-footer.css";

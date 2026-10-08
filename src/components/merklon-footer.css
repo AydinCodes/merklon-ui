@@ -1,0 +1,93 @@
+@layer mk {
+  .mk-footer {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .mk-footer-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--mk-space-4);
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: var(--mk-space-5) max(16px, env(safe-area-inset-right)) var(--mk-space-5) max(16px, env(safe-area-inset-left));
+  }
+
+  .mk-footer-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: var(--mk-hit);
+    padding: 0 4px;
+    margin-left: -4px;
+    border-radius: var(--mk-radius-md);
+    color: var(--mk-fg-muted);
+    font-family: var(--mk-font-display);
+    font-size: 15px;
+    font-weight: var(--mk-weight-medium);
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: color var(--mk-dur-base) var(--mk-ease-out);
+  }
+
+  .mk-footer-links {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .mk-footer-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    height: 32px;
+    margin-right: var(--mk-space-2);
+    padding: 0 10px;
+    border-radius: var(--mk-radius-full);
+    color: var(--mk-fg-muted);
+    font-size: var(--mk-text-base);
+    font-weight: var(--mk-weight-medium);
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: background-color var(--mk-dur-base) var(--mk-ease-out),
+      color var(--mk-dur-base) var(--mk-ease-out);
+  }
+
+  .mk-footer-link::before {
+    content: "";
+    position: absolute;
+    inset: -4px 0;
+  }
+
+  @media (hover: hover) {
+    .mk-footer-brand:hover {
+      color: var(--mk-fg);
+      transition-duration: 0ms;
+    }
+
+    .mk-footer-link:hover {
+      background: var(--mk-fill);
+      color: var(--mk-fg);
+      transition-duration: 0ms;
+    }
+  }
+
+  .mk-footer-brand:focus-visible,
+  .mk-footer-link:focus-visible {
+    outline: 2px solid var(--mk-focus-ring);
+    outline-offset: 2px;
+  }
+
+  .mk-footer-icon svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .mk-footer-divider {
+    width: 1px;
+    height: 16px;
+    margin: 0 var(--mk-space-2);
+    background: var(--mk-border-strong);
+  }
+}

@@ -90,7 +90,8 @@
     opacity: 0.7;
   }
 
-  .mk-input:read-only:not(:disabled) {
+  /* Buttons (the Select trigger) also match :read-only; only text fields should. */
+  .mk-input:is(input, textarea):read-only:not(:disabled) {
     background: var(--mk-bg-subtle);
   }
 

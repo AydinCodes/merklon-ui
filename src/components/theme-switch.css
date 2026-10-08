@@ -1,0 +1,61 @@
+@layer mk {
+  .mk-theme-switch {
+    display: inline-grid;
+    place-items: center;
+  }
+
+  .mk-theme-switch svg {
+    grid-area: 1 / 1;
+    transition: transform var(--mk-dur-spring) var(--mk-spring-bouncy),
+      opacity var(--mk-dur-fade) var(--mk-ease-out);
+  }
+
+  /* Light: sun shows, moon waits rotated out. Dark: the reverse. Chosen from
+     the same attributes as the theme itself, so it is right before React loads. */
+  .mk-theme-moon {
+    opacity: 0;
+    transform: rotate(-90deg) scale(calc(1 - 0.4 * var(--mk-motion)));
+  }
+
+  :root[data-theme="dark"] .mk-theme-sun {
+    opacity: 0;
+    transform: rotate(90deg) scale(calc(1 - 0.4 * var(--mk-motion)));
+  }
+
+  :root[data-theme="dark"] .mk-theme-moon {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .mk-theme-sun {
+      opacity: 0;
+      transform: rotate(90deg) scale(calc(1 - 0.4 * var(--mk-motion)));
+    }
+
+    :root:not([data-theme="light"]) .mk-theme-moon {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* The reveal: the new theme grows as a circle out of the switch. */
+  :root[data-theme-transition]::view-transition-old(root),
+  :root[data-theme-transition]::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+
+  :root[data-theme-transition]::view-transition-new(root) {
+    animation: mk-theme-reveal calc(560ms * var(--mk-slowmo)) var(--mk-ease-in-out);
+  }
+
+  @keyframes mk-theme-reveal {
+    from {
+      clip-path: circle(0 at var(--mk-vt-x) var(--mk-vt-y));
+    }
+    to {
+      clip-path: circle(var(--mk-vt-r) at var(--mk-vt-x) var(--mk-vt-y));
+    }
+  }
+}
