@@ -119,4 +119,5 @@ Good to know:
 | `Export … doesn't exist` after linking | An install replaced the link with an older GitHub version. Run `bun run ui:link` again. |
 | Components look unstyled (no borders or fills) | The site has no Tailwind and no `reset.css` import, or imports a reset after `styles.css` outside `@layer`. Use the globals from section 1. |
 | Theme flashes on load | `<ThemeScript />` is missing from `<head>`, or `suppressHydrationWarning` is missing from `<html>`. |
+| A stray `<site>/<site>/.next` folder appears after linking | A side effect of the widened Turbopack root while linked. It's build output: delete it. Sites ignore `.next/` at any depth, so it never gets committed. |
 | Hydration error mentioning `<div>` inside `<p>` | A block element is inside a paragraph. Use a `<div>` wrapper. |
