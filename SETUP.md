@@ -6,7 +6,7 @@ Everything below assumes your projects live side by side:
 ~/Documents/Projects/merklon/
   merklon-ui/     ← this repo (the components)
   website/        ← merklon.com (hub, contact page, /design)
-  some-site/      ← any other Merklon site
+  merklon-exif/   ← each site, named like its repo
 ```
 
 ## 1. Start a new site
@@ -18,14 +18,21 @@ improvements:
 
 ```bash
 cd ~/Documents/Projects/merklon
-git clone https://github.com/AydinCodes/merklon-websites-template.git my-new-site
-cd my-new-site
+git clone https://github.com/AydinCodes/merklon-websites-template.git merklon-exif
+cd merklon-exif
 claude        # then: "Set this up as a new site"
 ```
 
 Claude Code follows the template's `AGENTS.md`: it asks for the name, tagline
-and URL, runs `bun run new-site`, upgrades Next.js and the packages, points git
-at the site's own repo (keeping the template as a second remote), and builds.
+and URL, runs `bun run new-site`, upgrades Next.js and the packages, builds,
+and creates the site's repo with the GitHub CLI (keeping the template as a
+second remote).
+
+**Repos.** Every site is **private** and named **`merklon-<app-name>`**.
+`merklon-ui` and `merklon-websites-template` stay **public** on purpose:
+Vercel installs `merklon-ui` like any public package, with no tokens. (A
+private components repo would only work with a GitHub token written into
+every site's `package.json` and `bun.lock`.)
 
 **What a site installs.** Nothing beyond the template: `next`, `react`,
 `react-dom`, `@merklon/ui`, `@fontsource-variable/inter` and
@@ -44,8 +51,9 @@ the latest rules with `bun run ui:update`.
 
 ## 2. Deploy
 
-Import the repo into Vercel as usual. Nothing extra is needed: the components
-repo is public, so Vercel installs it like any other package. Commit
+Import the site's private repo into Vercel as usual (grant Vercel's GitHub app
+access to it if it isn't listed). Nothing else is needed: `merklon-ui` is
+public, so Vercel installs it like any other package. Commit
 `bun.lock` so Vercel builds exactly the component version you tested.
 
 ## 3. Update a site to the latest components
