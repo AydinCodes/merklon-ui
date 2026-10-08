@@ -88,7 +88,6 @@ import { MerklonFooter } from "@merklon/ui";
 ```json
 "scripts": {
   "ui:link": "cd ../merklon-ui && bun link && cd - && bun link @merklon/ui",
-  "ui:unlink": "bun add github:AydinCodes/merklon-ui",
   "ui:update": "bun update @merklon/ui"
 }
 ```
@@ -140,10 +139,14 @@ bun run typecheck
 # bump "version" in package.json and add a line to the changelog in README.md
 git add -A && git commit -m "Describe the change" && git push
 cd -
-bun run ui:unlink     # back to the GitHub version, now including your change
+bun run ui:update     # replaces the link with the GitHub version you just pushed
 ```
 
-Then run `bun run ui:update` in the other sites.
+`ui:update` both undoes the link and pulls the latest release, so it's the
+same command everywhere. Run it in the other sites too.
+
+Use `ui:update`, not `bun add github:…`: the lockfile still pins the old
+commit, and `bun add` keeps it.
 
 Good to know:
 
