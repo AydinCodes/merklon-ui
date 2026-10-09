@@ -67,6 +67,8 @@ handle instead of auto-growing.
 
 ## Changelog
 
+- **0.3.2** — `Select` and `DropdownMenu` typeahead: typing more of a word
+  stays on the item it already found ("aus" is Australia, not Austria).
 - **0.3.1** — PHILOSOPHY: `ThemeSwitch` is the standard theme control.
   SETUP: new sites start from merklon-websites-template.
 - **0.3.0** — `ThemeSwitch`: one button for light/dark with a circular reveal,

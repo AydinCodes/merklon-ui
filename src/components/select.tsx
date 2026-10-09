@@ -197,7 +197,10 @@ export function Select({
       const state = typeahead.current;
       state.text = now - state.at > 600 ? event.key.toLowerCase() : state.text + event.key.toLowerCase();
       state.at = now;
-      const ordered = [...all.slice(index + 1), ...all.slice(0, index + 1)];
+      // A new letter looks past the current item; more letters of the same
+      // word keep it in the running ("aus" stays on Australia).
+      const start = state.text.length > 1 ? Math.max(index, 0) : index + 1;
+      const ordered = [...all.slice(start), ...all.slice(0, start)];
       const match = ordered.find((item) => item.textContent?.trim().toLowerCase().startsWith(state.text));
       match?.focus({ preventScroll: true });
       match?.scrollIntoView({ block: "nearest" });

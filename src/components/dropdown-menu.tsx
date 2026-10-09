@@ -183,7 +183,10 @@ export function DropdownMenuContent({ tone, className, children, ...props }: Dro
       const state = typeahead.current;
       state.text = now - state.at > 600 ? event.key.toLowerCase() : state.text + event.key.toLowerCase();
       state.at = now;
-      const ordered = [...items.slice(index + 1), ...items.slice(0, index + 1)];
+      // A new letter looks past the current item; more letters of the same
+      // word keep it in the running.
+      const start = state.text.length > 1 ? Math.max(index, 0) : index + 1;
+      const ordered = [...items.slice(start), ...items.slice(0, start)];
       ordered.find((item) => item.textContent?.trim().toLowerCase().startsWith(state.text))?.focus();
     }
   };
